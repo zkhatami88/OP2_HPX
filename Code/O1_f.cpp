@@ -94,7 +94,7 @@ int main_hpx(){
             std::vector<std::vector<hpx::shared_future<double> > > new_data(2);
             
             
-            for_each(par, blockIdx(0), blockIdx(nblocks),
+            for_each(par, blockIdx(0), blockIdx(nblocks-1),
                      [&Plan, &unwrapped(bres_calc), &new_data,
                       &arg0, &arg1, &arg2, &arg3, &arg4, &arg5](std::size_t i)
                      {
