@@ -1,7 +1,7 @@
 
 
 
-double * bres_calc(const double *x1, const double *x2, const double *q1,
+inline void bres_calc(const double *x1, const double *x2, const double *q1,
                       const double *adt1, double *res1, const int *bound) {
     
     double dx,dy,mu, ri, p1,vol1, p2,vol2, f;
@@ -34,94 +34,125 @@ double * bres_calc(const double *x1, const double *x2, const double *q1,
         f = 0.5f*(vol1*(q1[3]+p1)     + vol2*(qinf[3]+p2)    ) + mu*(q1[3]-qinf[3]);
         res1[3] += f;
     }
-    
-    return res1;
+
 }
 
+double* work(int start, int fin, op_arg arg0, op_arg arg1, op_arg arg2, op_arg arg3,
+                         op_arg arg4, op_arg arg5){
 
+    typedef boost::counting_iterator<std::size_t> iterator;
+    
+    using namespace hpx::parallel;
+    for_each(par, iterator(start), iterator(finish-1),
+              [&arg0, &arg1, &arg2, &arg3, &arg4, &arg5](std::size_t i)
+             {
+                 int map0idx = arg0.map_data[i * arg0.map->dim + 0];
+                 int map1idx = arg0.map_data[i * arg0.map->dim + 1];
+                 int map2idx = arg2.map_data[i * arg2.map->dim + 0];
+    
+                 bres_calc(
+                           &((double*)arg0.data)[2 * map0idx],
+                           &((double*)arg0.data)[2 * map1idx],
+                           &((double*)arg2.data)[4 * map2idx],
+                           &((double*)arg3.data)[1 * map2idx],
+                           &((double*)arg4.data)[4 * map2idx],
+                           &((int*)arg5.data)[1 * n]);
+             });
+    
+    return arg4.data; //how to return two ar.data??
+}
 
+int main_hpx(){
 
-for(int iter=1; iter<=niter; iter++)
-{
+    for(int iter=1; iter<=niter; iter++)
+    {
     
-    op_plan *Plan = op_plan_get(name,set,part_size,nargs,args,ninds,inds);
+        
+        op_plan *Plan = op_plan_get(name,set,part_size,nargs,args,ninds,inds);
     
-    for ( int blockIdx=0; blockIdx<nblocks; blockIdx++ ){
+        //First:
+        hpx::future<op_arg> data0 = hpx::make_ready_future(arg0);
+        hpx::future<op_arg> data1 = hpx::make_ready_future(arg1);
+        hpx::future<op_arg> data2 = hpx::make_ready_future(arg2);
+        hpx::future<op_arg> data3 = hpx::make_ready_future(arg3);
+        hpx::future<op_arg> data4 = hpx::make_ready_future(arg4);
+        hpx::future<op_arg> data5 = hpx::make_ready_future(arg5);
     
-    int blockId  = Plan->blkmap[blockIdx + block_offset];
-    int nelem    = Plan->nelems[blockId];
-    int offset_b = Plan->offset[blockId];
+        typedef boost::counting_iterator<std::size_t> blockIdx;
     
-    for ( int n=offset_b; n<offset_b+nelem; n++ ){
+        for_each(par, blockIdx(0), blockIdx(nblocks),
+                 [&Plan, &unwrapped(bres_calc),
+                  &data0, &data1, &data2, &data3, &data4, &data5](std::size_t i) //i=blockIdx and all data are hpx::future
+                 {
+                     int blockId  = Plan->blkmap[i + block_offset];
+                     int nelem    = Plan->nelems[i];
+                     int offset_b = Plan->offset[i];
+                     hpx::future<double> new_data[nelem];
+                 
+                     new_data[i] = dataflow(
+                                            hpx::launch::async, unwrapped(work),
+                                            hpx::make_ready_future(offset_b),
+                                            hpx::make_ready_future(offset_b+nelem),
+                                            data0, data1, data2, data3, data4, data5); //should be future
+                 });
+    
+    
+        //Second:
+        /*for ( int blockIdx=0; blockIdx<nblocks; blockIdx++ ){
+    
+         int blockId  = Plan->blkmap[blockIdx + block_offset];
+        int nelem    = Plan->nelems[blockId];
+         int offset_b = Plan->offset[blockId];
         
-        int map0idx = arg0.map_data[n * arg0.map->dim + 0];
-        int map1idx = arg0.map_data[n * arg0.map->dim + 1];
-        int map2idx = arg2.map_data[n * arg2.map->dim + 0];
-        
-        next[i] = dataflow(
-                           hpx::launch::async, Op,
-                           current[idx(i-1, np)], current[i], current[idx(i+1, np)]
-                           );
-        
-        arg4.data = dataflow(
-                             hpx::launch::async, bres_calc,
-                             current[idx(i-1, np)], current[i], current[idx(i+1, np)]
-                             );
-        
+         for ( int n=offset_b; n<offset_b+nelem; n++ ){
+         
+                int map0idx = arg0.map_data[n * arg0.map->dim + 0];
+                int map1idx = arg0.map_data[n * arg0.map->dim + 1];
+                int map2idx = arg2.map_data[n * arg2.map->dim + 0];
 
-        bres_calc(
-                  &((hpx::future<double*>)arg0.data)[2 * map0idx],
-                  &((hpx::future<double*>)arg0.data)[2 * map1idx],
-                  &((hpx::future<double*>)arg2.data)[4 * map2idx],
-                  &((hpx::future<double*>)arg3.data)[1 * map2idx],
-                  &((hpx::future<double*>)arg4.data)[4 * map2idx],
-                  &((hpx::future<int*>)arg5.data)[1 * n]);
+                hpx::future<double*> data0 = arg0.data[2 * map0idx];
+                hpx::future<double*> data1 = arg0.data[2 * map1idx];
+                hpx::future<double*> data2 = arg2.data[4 * map2idx];
+                hpx::future<double*> data3 = arg3.data[1 * map2idx];
+                hpx::future<double*> data4 = arg4.data[4 * map2idx];
+                hpx::future<int*> data5 = arg5.data[1 * n];
         
-        
-        /*arg4.data = dataflow(
-                        hpx::launch::async,
-                        unwrapped(
-                                  [(hpx::future<double*>)arg0.data)[2 * map0idx],
-                                   (hpx::future<double*>)arg0.data)[2 * map1idx],
-                                   (hpx::future<double*>)arg2.data)[4 * map2idx],
-                                   (hpx::future<double*>)arg3.data)[1 * map2idx],
-                                   (hpx::future<double*>)arg4.data)[4 * map2idx],
-                                   (hpx::future<int*>)arg5.data)[1 * n])]
-                                  (double *data0, double *data1, double *data2,
-                                   double *data3, double *data4, int *data5) -> hpx::future<double*>
-                                  {
+                arg4.data[4 * map2idx] = dataflow(hpx::launch::async, unwrapped(bres_calc),
+                                    data0, data1, data2, data3, data4, data5);
+                */
+                //Third:
+                /*arg4.data = dataflow(
+                                hpx::launch::async,
+                                unwrapped(
+                                        [(hpx::future<double*>)arg0.data)[2 * map0idx],
+                                        (hpx::future<double*>)arg0.data)[2 * map1idx],
+                                        (hpx::future<double*>)arg2.data)[4 * map2idx],
+                                        (hpx::future<double*>)arg3.data)[1 * map2idx],
+                                        (hpx::future<double*>)arg4.data)[4 * map2idx],
+                                        (hpx::future<int*>)arg5.data)[1 * n])]
+                                        (double *data0, double *data1, double *data2,
+                                        double *data3, double *data4, int *data5) -> hpx::future<double*>
+                                        {
                                   
-                                  
-                                  
-                                  }
-                                  ),
+                                        }
+                                        ),
                              
-                             arg0.data[2 * map0idx].get,
-                             arg0.data[2 * map1idx].get,
-                             arg2.data[4 * map2idx].get,
-                             arg3.data[1 * map2idx].get,
-                             arg4.data[4 * map2idx].get,
-                             arg5.data)[1 * n].get
-        );*/
+                                    arg0.data[2 * map0idx].get,
+                                    arg0.data[2 * map1idx].get,
+                                    arg2.data[4 * map2idx].get,
+                                    arg3.data[1 * map2idx].get,
+                                    arg4.data[4 * map2idx].get,
+                                    arg5.data)[1 * n].get
+                 );
         
-        hpx::future<double*> data0 = arg0.data[2 * map0idx];
-        hpx::future<double*> data1 = arg0.data[2 * map1idx];
-        hpx::future<double*> data2 = arg2.data[4 * map2idx];
-        hpx::future<double*> data3 = arg3.data[1 * map2idx];
-        hpx::future<double*> data4 = arg4.data)[4 * map2idx];
-        hpx::future<int*> data5 = arg5.data[1 * n];
 
-        arg4.data = dataflow(unwrapped(bres_calc), (hpx::future<double*>arg0.data)[2 * map0idx],
-                             (hpx::future<double*>arg0.data)[2 * map1idx],
-                             (hpx::future<double*>arg2.data)[4 * map2idx],
-                             (hpx::future<double*>arg3.data)[1 * map2idx],
-                             (hpx::future<double*>arg4.data)[4 * map2idx],
-                             (hpx::future<int*>arg5.data)[1 * n]);
+                 }*/
+
     }
+    
+    return hpx::when_all();
 
 }
-
-
 
 
 for ( int blockIdx=0; blockIdx<nblocks; blockIdx++ ){
