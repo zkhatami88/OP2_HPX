@@ -47,7 +47,7 @@ std::vector<std::vector<double>> work(int start, int fin, op_arg arg0, op_arg ar
 
     typedef boost::counting_iterator<std::size_t> iterator;
     int nelem=fin-start;
-    std::vector<std::vector<double>> new_data(nelem,arg4.data->size);
+    std::vector<std::vector<double>> new_data(nelem, std::vector<double>(arg4.data->size));
     
     using namespace hpx::parallel;
     for_each(par, iterator(start), iterator(finish-1),
