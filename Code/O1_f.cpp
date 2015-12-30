@@ -95,8 +95,8 @@ int main_hpx(){
             
             
             for_each(par, blockIdx(0), blockIdx(nblocks-1),
-                     [&Plan, &unwrapped(bres_calc), &new_data,
-                      &arg0, &arg1, &arg2, &arg3, &arg4, &arg5](std::size_t i)
+                     [&Plan, &new_data, &arg0, &arg1, &arg2, &arg3, &arg4, &arg5]
+                     (std::size_t i)
                      {
                          int blockId  = Plan->blkmap[i + block_offset];
                          int nelem    = Plan->nelems[i];
