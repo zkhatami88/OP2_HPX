@@ -51,7 +51,8 @@ std::vector<std::vector<double>> work(int start, int fin, op_arg arg0, op_arg ar
     
     using namespace hpx::parallel;
     for_each(par, iterator(start), iterator(finish-1),
-              [&&new_data, &arg0, &arg1, &arg2, &arg3, &arg4, &arg5](std::size_t i)
+             [&]//[&new_data, &arg0, &arg1, &arg2, &arg3, &arg4, &arg5]
+             (std::size_t i)
              {
                  int map0idx = arg0.map_data[i * arg0.map->dim + 0];
                  int map1idx = arg0.map_data[i * arg0.map->dim + 1];
@@ -95,7 +96,7 @@ int main_hpx(){
             
             
             for_each(par, blockIdx(0), blockIdx(nblocks-1),
-                     [&Plan, &new_data, &arg0, &arg1, &arg2, &arg3, &arg4, &arg5]
+                     [&]//[&Plan, &new_data, &arg0, &arg1, &arg2, &arg3, &arg4, &arg5]
                      (std::size_t i)
                      {
                          int blockId  = Plan->blkmap[i + block_offset];
