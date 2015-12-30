@@ -128,7 +128,7 @@ int main_hpx(){
         OP_kernels[3].transfer2 += Plan->transfer2;
     }
     
-    hpx::wait_all(new_data);//I think it will not work
+    hpx::wait_all(new_data);//wait for all blocks, but I think it will not work
 
 }
 
