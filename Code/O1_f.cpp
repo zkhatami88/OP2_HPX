@@ -71,35 +71,63 @@ std::vector<std::vector<double>> work(int start, int fin, op_arg data0, op_arg d
 //should be produced
 int main_hpx(){
     
-    op_plan *Plan = op_plan_get(name,set,part_size,nargs,args,ninds,inds);
+    int set_size = op_mpi_halo_exchanges(set, nargs, args);
     
-    hpx::future<op_arg> data0 = hpx::make_ready_future(arg0);
-    hpx::future<op_arg> data1 = hpx::make_ready_future(arg1);
-    hpx::future<op_arg> data2 = hpx::make_ready_future(arg2);
-    hpx::future<op_arg> data3 = hpx::make_ready_future(arg3);
-    hpx::future<op_arg> data4 = hpx::make_ready_future(arg4);
-    hpx::future<op_arg> data5 = hpx::make_ready_future(arg5);
+    if (set->size >0) {
     
-    typedef boost::counting_iterator<std::size_t> blockIdx;
-    std::vector<std::vector<hpx::future<double>>> new_data(max_nelem,arg4.data->size); //max_nelem should be computed before following loop then the size of each should be changed
-
-    for_each(par, blockIdx(0), blockIdx(nblocks),
-                [&Plan, &unwrapped(bres_calc), &new_data,
-                &data0, &data1, &data2, &data3, &data4, &data5](std::size_t i)
-                {
-                    int blockId  = Plan->blkmap[i + block_offset];
-                    int nelem    = Plan->nelems[i];
-                    int offset_b = Plan->offset[i];
+        op_plan *Plan = op_plan_get(name,set,part_size,nargs,args,ninds,inds);
+    
+        int block_offset = 0;
+        for ( int col=0; col<Plan->ncolors; col++ ){
+            
+            
+            
+            if (col==Plan->ncolors_core)
+                op_mpi_wait_all(nargs, args);
+            
+            int nblocks = Plan->ncolblk[col];
+    
+            typedef boost::counting_iterator<std::size_t> blockIdx;
+            
+            // new_data[i][0 ,1, 2] which i is blockId
+            std::vector<std::vector<hpx::shared_future<double> > > new_data(2);
+            
+            
+            for_each(par, blockIdx(0), blockIdx(nblocks),
+                     [&Plan, &unwrapped(bres_calc), &new_data,
+                      &arg0, &arg1, &arg2, &arg3, &arg4, &arg5](std::size_t i)
+                     {
+                         int blockId  = Plan->blkmap[i + block_offset];
+                         int nelem    = Plan->nelems[i];
+                         int offset_b = Plan->offset[i];
+                         
+                         new_data.resize(nelem);
                     
-                    new_data = dataflow(
-                                        hpx::launch::async, unwrapped(work),
-                                        hpx::make_ready_future(offset_b),
-                                        hpx::make_ready_future(offset_b+nelem),
-                                        data0, data1, data2, data3, data4, data5); //should be future
-                });
+                         new_data[i] = dataflow( //std::vector<std::vector<hpx::future<double>>> for each block
+                                             hpx::launch::async, unwrapped(work),
+                                             hpx::make_ready_future(offset_b),
+                                             hpx::make_ready_future(offset_b+nelem),
+                                             hpx::make_ready_future(arg0),
+                                             hpx::make_ready_future(arg1),
+                                             hpx::make_ready_future(arg2),
+                                             hpx::make_ready_future(arg3),
+                                             hpx::make_ready_future(arg4),
+                                             hpx::make_ready_future(arg5));
+                     });
+            
+            
+            
+
+            
+            
+            block_offset += nblocks;
+        }
+        
+        OP_kernels[3].transfer  += Plan->transfer;
+        OP_kernels[3].transfer2 += Plan->transfer2;
+    }
     
-    
-    return hpx::when_all(new_data); // which new_data is arg4.data
+    hpx::wait_all(new_data);
 
 }
 
