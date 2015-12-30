@@ -42,30 +42,31 @@ std::vector<double> bres_calc(const double *x1, const double *x2, const double *
 }
 
 //should be produced
-std::vector<std::vector<double>> work(int start, int fin, op_arg data0, op_arg data1, op_arg data2, op_arg data3,
-                         op_arg data4, op_arg data5){
+std::vector<std::vector<double>> work(int start, int fin, op_arg arg0, op_arg arg1, op_arg arg2, op_arg arg3,
+                         op_arg arg4, op_arg arg5){
 
     typedef boost::counting_iterator<std::size_t> iterator;
-    std::vector<std::vector<double>> new_data(nelem,data4.data->size);
+    int nelem=fin-start;
+    std::vector<std::vector<double>> new_data(nelem,arg4.data->size);
     
     using namespace hpx::parallel;
     for_each(par, iterator(start), iterator(finish-1),
-              [&&new_data, &data0, &data1, &data2, &data3, &data4, &data5](std::size_t i)
+              [&&new_data, &arg0, &arg1, &arg2, &arg3, &arg4, &arg5](std::size_t i)
              {
-                 int map0idx = data0.map_data[i * arg0.map->dim + 0];
-                 int map1idx = data0.map_data[i * arg0.map->dim + 1];
-                 int map2idx = data2.map_data[i * arg2.map->dim + 0];
+                 int map0idx = arg0.map_data[i * arg0.map->dim + 0];
+                 int map1idx = arg0.map_data[i * arg0.map->dim + 1];
+                 int map2idx = arg2.map_data[i * arg2.map->dim + 0];
     
                  new_data[i]=bres_calc(
-                           &((double*)data0.data)[2 * map0idx],
-                           &((double*)data0.data)[2 * map1idx],
-                           &((double*)data2.data)[4 * map2idx],
-                           &((double*)data3.data)[1 * map2idx],
-                           &((double*)data4.data)[4 * map2idx],
-                           &((int*)data5.data)[1 * n]);
+                           &((double*)arg0.data)[2 * map0idx],
+                           &((double*)arg1.data)[2 * map1idx],
+                           &((double*)arg2.data)[4 * map2idx],
+                           &((double*)arg3.data)[1 * map2idx],
+                           &((double*)arg4.data)[4 * map2idx],
+                           &((int*)arg5.data)[1 * n]);
              });
     
-    return new_data; //how to return two ar.data??
+    return new_data; //how to return two arg.data??
 }
 
 //should be produced
@@ -127,7 +128,7 @@ int main_hpx(){
         OP_kernels[3].transfer2 += Plan->transfer2;
     }
     
-    hpx::wait_all(new_data);
+    hpx::wait_all(new_data);//I think it will not work
 
 }
 
