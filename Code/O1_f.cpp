@@ -102,7 +102,7 @@ int main_hpx(){
                          int nelem    = Plan->nelems[i];
                          int offset_b = Plan->offset[i];
                          
-                         new_data.resize(nelem);
+                         new_data[i].resize(nelem);
                     
                          new_data[i] = dataflow( //std::vector<std::vector<hpx::future<double>>> for each block
                                              hpx::launch::async, unwrapped(work),
