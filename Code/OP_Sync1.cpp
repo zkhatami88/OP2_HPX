@@ -40,38 +40,44 @@ std::vector<double> bres_calc(const double *x1, const double *x2, const double *
     return result;
 
 }
+HPX_PLAIN_ACTION(bres_calc,bres_calc_action);
 
 //should be produced
-std::vector<std::vector<double>> work(int start, int fin, op_arg arg0, op_arg arg1, op_arg arg2, op_arg arg3,
-                         op_arg arg4, op_arg arg5){
+std::vector<std::vector<hpx::shared_future<double> > > work(
+                                                            int start, int fin,
+                                                            op_arg arg0, op_arg arg1, op_arg arg2,
+                                                            op_arg arg3, op_arg arg4, op_arg arg5)
+    {
 
     typedef boost::counting_iterator<std::size_t> iterator;
     int nelem=fin-start;
-    std::vector<std::vector<double>> new_data(nelem, std::vector<double>(arg4.data->size));
+    std::vector<std::vector<hpx::shared_future<double>> new_data(nelem,
+                                                                 std::vector<hpx::shared_future<double>(arg4.data->size));
     
     using namespace hpx::parallel;
     for_each(par, iterator(start), iterator(finish-1),
-             [&]//[&new_data, &arg0, &arg1, &arg2, &arg3, &arg4, &arg5]
-             (std::size_t i)
+             [&](std::size_t i)
              {
                  int map0idx = arg0.map_data[i * arg0.map->dim + 0];
                  int map1idx = arg0.map_data[i * arg0.map->dim + 1];
                  int map2idx = arg2.map_data[i * arg2.map->dim + 0];
     
-                 new_data[i]=bres_calc(
-                           &((double*)arg0.data)[2 * map0idx],
-                           &((double*)arg1.data)[2 * map1idx],
-                           &((double*)arg2.data)[4 * map2idx],
-                           &((double*)arg3.data)[1 * map2idx],
-                           &((double*)arg4.data)[4 * map2idx],
-                           &((int*)arg5.data)[1 * n]);
-             });
+                 new_data[i] = hpx::async<bres_calc_action>(hpx::find_here(),
+                                                       &((double*)arg0.data)[2 * map0idx],
+                                                       &((double*)arg1.data)[2 * map1idx],
+                                                       &((double*)arg2.data)[4 * map2idx],
+                                                       &((double*)arg3.data)[1 * map2idx],
+                                                       &((double*)arg4.data)[4 * map2idx],
+                                                       &((int*)arg5.data)[1 * n]);
+             }
+
     
-    return new_data; //how to return two arg.data??
+    return new_data;
 }
 
 //should be produced
 int main_hpx(){
+    
     
     int set_size = op_mpi_halo_exchanges(set, nargs, args);
     
@@ -80,47 +86,30 @@ int main_hpx(){
         op_plan *Plan = op_plan_get(name,set,part_size,nargs,args,ninds,inds);
     
         int block_offset = 0;
-        for ( int col=0; col<Plan->ncolors; col++ ){
-            
+        for ( int col=0; col<Plan->ncolors; col++ ){ //I think I can have hpx::parallel here
             
             
             if (col==Plan->ncolors_core)
                 op_mpi_wait_all(nargs, args);
             
             int nblocks = Plan->ncolblk[col];
-    
-            typedef boost::counting_iterator<std::size_t> blockIdx;
             
             // new_data[i][0 ,1, 2] which i is blockId
             std::vector<std::vector<hpx::shared_future<double> > > new_data(2);
             
+            for(int blockIdx=0; blockIdx<nblocks; ++blockIdx){
             
-            for_each(par, blockIdx(0), blockIdx(nblocks-1),
-                     [&]//[&Plan, &new_data, &arg0, &arg1, &arg2, &arg3, &arg4, &arg5]
-                     (std::size_t i)
-                     {
-                         int blockId  = Plan->blkmap[i + block_offset];
-                         int nelem    = Plan->nelems[i];
-                         int offset_b = Plan->offset[i];
-                         
-                         new_data[i].resize(nelem);
-                    
-                         new_data[i] = dataflow( //std::vector<std::vector<hpx::future<double>>> for each block
-                                             hpx::launch::async, unwrapped(work),
-                                             hpx::make_ready_future(offset_b),
-                                             hpx::make_ready_future(offset_b+nelem),
-                                             hpx::make_ready_future(arg0),
-                                             hpx::make_ready_future(arg1),
-                                             hpx::make_ready_future(arg2),
-                                             hpx::make_ready_future(arg3),
-                                             hpx::make_ready_future(arg4),
-                                             hpx::make_ready_future(arg5));
-                     });
-            
-            
+                int blockId  = Plan->blkmap[blockIdx + block_offset];
+                int nelem    = Plan->nelems[blockIdx];
+                int offset_b = Plan->offset[blockIdx];
+                
+                new_data[blockIdx].resize(nelem);
+                
+                new_data[blockIdx] = hpx::async(work, offset_b, offset_b+nelem,
+                                                arg0, arg1, arg2, arg3, arg4, arg5);
+            }
             
 
-            
             
             block_offset += nblocks;
         }
