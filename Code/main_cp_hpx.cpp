@@ -182,6 +182,7 @@ int main(int argc, char **argv)
             
             // calculate area/timstep
             
+            // hpx::async(fnc, in1...)
             new_data_2[iter][k].push_back(op_par_loop(adt_calc,"adt_calc",cells, //***
                         op_arg_dat(p_x,   0,pcell, 2,"double",OP_READ ),
                         op_arg_dat(p_x,   1,pcell, 2,"double",OP_READ ),
@@ -222,7 +223,7 @@ int main(int argc, char **argv)
                         op_arg_gbl(&rms,1,"double",OP_INC)));
         }
         
-        hpx::wait_all(new_data_2[iter], new_data_1[iter]); //***
+        hpx::wait_all(new_data_2[iter], new_data_1[iter]); //*** how to remove this synchronization
         
         // print iteration history
         rms = sqrt(rms/(double) op_get_size(cells)); // rms should get here to be calculated
