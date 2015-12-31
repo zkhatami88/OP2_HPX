@@ -57,9 +57,7 @@ std::vector<std::vector<std::vector<hpx::shared_future<double>>>> op_par_loop( /
         
         // kernel( (T0 *)p_a[0], (T1 *)p_a[1]);
         
-        new_data[i] = dataflow(hpx::launch::async, unwrapped(kernel), //****
-                 hpx::make_ready_future((T0 *)p_a[0]),
-                 hpx::make_ready_future((T1 *)p_a[1]));
+        new_data[i] = hpx::async(kernel, (T0 *)p_a[0], (T1 *)p_a[1]); //****
 
     }
     

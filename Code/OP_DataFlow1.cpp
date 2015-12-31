@@ -116,9 +116,6 @@ int main_hpx(){
                                              hpx::make_ready_future(arg4),
                                              hpx::make_ready_future(arg5));
                      });
-            
-            
-            
 
             
             
@@ -129,7 +126,7 @@ int main_hpx(){
         OP_kernels[3].transfer2 += Plan->transfer2;
     }
     
-    hpx::wait_all(new_data);//wait for all blocks, but I think it will not work
+    return new_data;//wait for all blocks, but I think it will not work
 
 }
 
