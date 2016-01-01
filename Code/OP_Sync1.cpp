@@ -86,7 +86,7 @@ int main_hpx(){
         op_plan *Plan = op_plan_get(name,set,part_size,nargs,args,ninds,inds);
     
         int block_offset = 0;
-        for ( int col=0; col<Plan->ncolors; col++ ){ //I think I can have hpx::parallel here
+        for ( int col=0; col<Plan->ncolors; col++ ){ //It cannot be parallelized, same color can be parallelized
             
             
             if (col==Plan->ncolors_core)
