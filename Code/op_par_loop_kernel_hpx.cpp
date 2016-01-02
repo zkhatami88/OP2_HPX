@@ -47,7 +47,7 @@ std::vector<std::vector<std::vector<hpx::shared_future<double>>>> op_par_loop( /
     // loop over set elements
     int halo = 0;
     
-    for (int n=0; n<n_upper; n++) { // I think it can be parallelized
+    for (int n=0; n<n_upper; n++) { // I think it can be parallelized but it may enough as below
         if (n==set->core_size) op_mpi_wait_all(2,args);
         if (n==set->size) halo = 1;
         if (args[0].idx < -1) op_arg_copy_in(n,args[0], (char **)p_a[0]);
