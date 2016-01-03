@@ -105,9 +105,37 @@ int main_hpx(){
                 
                 new_data[blockIdx].resize(nelem);
                 
-                new_data[blockIdx] = hpx::async(work, offset_b, offset_b+nelem,
-                                                arg0, arg1, arg2, arg3, arg4, arg5);
-            }
+                //new_data[blockIdx] = hpx::async(work, offset_b, offset_b+nelem,
+                  //                              arg0, arg1, arg2, arg3, arg4, arg5);
+                
+                new_data[blockIdx] = [offset_b, nelem, &arg0, &arg1, &arg2, &arg3, &arg4, &arg5]
+                                    (){
+                                        
+                                        typedef boost::counting_iterator<std::size_t> iterator;
+                                        std::vector<std::vector<hpx::shared_future<double>> new_data(nelem,
+                                                                                 std::vector<hpx::shared_future<double>(arg4.data->size));
+                                        
+                                        for_each(par, iterator(offset_b), iterator(offset_b+nelem-1),
+                                                 [&](std::size_t i)
+                                                 {
+                                                     int map0idx = arg0.map_data[i * arg0.map->dim + 0];
+                                                     int map1idx = arg0.map_data[i * arg0.map->dim + 1];
+                                                     int map2idx = arg2.map_data[i * arg2.map->dim + 0];
+                            
+                                                     new_data[i] = hpx::async<bres_calc_action>(hpx::find_here(),
+                                                                        &((double*)arg0.data)[2 * map0idx],
+                                                                        &((double*)arg1.data)[2 * map1idx],
+                                                                        &((double*)arg2.data)[4 * map2idx],
+                                                                        &((double*)arg3.data)[1 * map2idx],
+                                                                        &((double*)arg4.data)[4 * map2idx],
+                                                                        &((int*)arg5.data)[1 * n]);
+                                                 }
+                                                 
+                                                 
+                                                 return new_data;
+                                                 };
+
+                }
             
 
             
