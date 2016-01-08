@@ -1,0 +1,57 @@
+Install OP2:
+git clone https://github.com/OP2/OP2-Common.git op2
+./cmake.local 
+
+
+
+to run examples:
+
+export OP2_COMPILER='gnu'
+export OP2_INSTALL_PATH=/home/zahra/OP2-Common/op2
+export OP2_INC=/home/zahra/OP2-Common/op2/c/include
+export OP2_LIB=/home/zahra/OP2-Common/op2/c/lib/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/zahra/OP2-Common/op2/c/lib
+cmake -DCMAKE_CXX_COMPILER=g++
+make 
+
+----------------------------------------------------------------------
+
+To Install OP2:
+
+export LD_INCLUDE_PATH=/home/zahra/OP2-Common/op2/c/include/
+export LD_LIBRARY_PATH=/home/zahra/OP2-Common/op2/c/lib/
+export OP2_INSTALL_PATH=/home/zahra/OP2-Common/op2
+export OP2_INC=/home/zahra/OP2-Common/op2/c/include
+export OP2_LIB=/home/zahra/OP2-Common/op2/c/lib/
+
+export OP2_INSTALL_PATH=/home/zahra/OP2-Common/op2
+
+export HPX_INSTALL_PATH=/home/zahra/Projects/HPX
+env
+
+export PARMETIS_INSTALL_PATH=/usr/bin/parmetis-4.0.3/
+export PTSCOTCH_INSTALL_PATH=/usr/bin
+export HDF5_INSTALL_PATH=/usr/bin/hdf5-1.8.16-linux-centos7-x86_64-gcc483-shared
+export PTSCOTCH_LIBRARY=/usr/bin/parmetis-4.0.3/libparmetis
+export PARMETIS_INCLUDE_DIR=/usr/bin/parmetis-4.0.3/include
+export PARMETIS_TEST_RUNS=/usr/bin/parmetis-4.0.3
+./cmake.local
+
+./cmake.local -DOP2_DIR=/home/zahra/OP2-Common/op2/c/build
+
+----------------------------------------------------------------------
+
+sudo dpkg -L packagename
+SCOTCH: /usr/bin
+parmetis: /usr/bin/parmetis-4.0.3
+HDF5: /usr/bin/hdf5-1.8.16-linux-centos7-x86_64-gcc483-shared
+mpichversion
+
+
+
+the above absolute path could be added:
+export PATH=$PATH:/usr/sbin
+
+for hpx:
+cmake -DCMAKE_CXX_COMPILER=g++
+CFLAGS=-Wno-error make 
