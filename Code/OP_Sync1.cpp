@@ -109,7 +109,8 @@ int main_hpx(){
                   //                              arg0, arg1, arg2, arg3, arg4, arg5);
                 
                 new_data[blockIdx] = [offset_b, nelem, &arg0, &arg1, &arg2, &arg3, &arg4, &arg5]
-                                    (){
+                                    ()
+                {
                                         
                                         typedef boost::counting_iterator<std::size_t> iterator;
                                         std::vector<std::vector<hpx::shared_future<double>> new_data(nelem,
