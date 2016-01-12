@@ -21,12 +21,10 @@
 
 std::vector<std::vector<double>> work(int start, int finish, op_arg arg0, op_arg arg1)
 {
-	std::vector<std::vector<double>> s_res;	
-
-        for(int n=start; n<finish; n++)
-        {
+	std::vector<std::vector<double>> s_res;
+    for(int n=start; n<finish; n++)
 		s_res.push_back(save_soln(&((double*)arg0.data)[4*n],&((double*)arg1.data)[4*n]));
-	}
+	
 
 	return s_res;
 }
@@ -62,7 +60,7 @@ std::vector<hpx::future<std::vector<std::vector<double>>>> op_par_loop_save_soln
     int nthreads = 1;
 #endif
     
-    	std::vector<hpx::future<std::vector<std::vector<double>>>> new_data1;
+    std::vector<hpx::future<std::vector<std::vector<double>>>> new_data1;
 
     if (set->size >0) {
         
@@ -73,7 +71,7 @@ std::vector<hpx::future<std::vector<std::vector<double>>>> op_par_loop_save_soln
             int start  = (set->size* thr)/nthreads;
             int finish = (set->size*(thr+1))/nthreads;
 
-	    new_data1.push_back(hpx::async(work,start,finish,arg0,arg1));
+            new_data1.push_back(hpx::async(work,start,finish,arg0,arg1));
 
         }
      

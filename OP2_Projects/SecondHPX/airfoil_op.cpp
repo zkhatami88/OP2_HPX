@@ -78,7 +78,6 @@ int cells_stride = 1;
 //
 
 std::vector<hpx::future<std::vector<std::vector<double>>>> op_par_loop_save_soln(char const *, op_set,
-//std::vector<std::vector<std::vector<std::vector<double>>>> op_par_loop_save_soln(char const *, op_set,
                            op_arg,
                            op_arg );
 
@@ -266,7 +265,6 @@ int hpx_main(int argc, char **argv)
     
 
 	std::vector<std::vector<hpx::future<std::vector<std::vector<double>>>>> new_data1(niter);
-	//std::vector<std::vector<std::vector<std::vector<std::vector<double>>>>> new_data1;
     
     for(int iter=1; iter<=niter; iter++) {
         
