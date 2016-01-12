@@ -50,6 +50,13 @@
 #include <string.h>
 #include <math.h>
 
+#include <hpx/hpx_init.hpp>
+#include <hpx/hpx.hpp>
+#include <hpx/lcos/gather.hpp>
+#include <hpx/runtime/serialization/vector.hpp>
+#include <hpx/runtime/serialization/serialize.hpp>
+#include <hpx/include/async.hpp>
+
 // global constants
 
 double gam, gm1, cfl, eps, mach, alpha, qinf[4];
@@ -70,7 +77,8 @@ int cells_stride = 1;
 // op_par_loop declarations
 //
 
-void op_par_loop_save_soln(char const *, op_set,
+std::vector<hpx::future<std::vector<std::vector<double>>>> op_par_loop_save_soln(char const *, op_set,
+//std::vector<std::vector<std::vector<std::vector<double>>>> op_par_loop_save_soln(char const *, op_set,
                            op_arg,
                            op_arg );
 
@@ -120,7 +128,7 @@ void op_par_loop_update(char const *, op_set,
 
 // main program
 
-int main(int argc, char **argv)
+int hpx_main(int argc, char **argv)
 {
     // OP initialisation
     op_init(argc,argv,2);
@@ -141,12 +149,12 @@ int main(int argc, char **argv)
     FILE *fp;
     //if ( (fp = fopen("./new_grid.dat","r")) == NULL) {
     
-    if ( (fp = fopen("~/OP2-Common/apps/c/airfoil/myexample/Example_with_input/new_grid.txt","r")) == NULL) {
+    if ( (fp = fopen("./new_grid.dat","r")) == NULL) {
         op_printf("can't open file new_grid.dat\n"); exit(-1);
     }
     
     if (fscanf(fp,"%d %d %d %d \n",&nnode, &ncell, &nedge, &nbedge) != 4) {
-        op_printf("error reading from new_grid.txt\n"); exit(-1);
+        op_printf("error reading from new_grid.dat\n"); exit(-1);
     }
     
     cell   = (int *) malloc(4*ncell*sizeof(int));
@@ -164,28 +172,28 @@ int main(int argc, char **argv)
     
     for (int n=0; n<nnode; n++) {
         if (fscanf(fp,"%lf %lf \n",&x[2*n], &x[2*n+1]) != 2) {
-            op_printf("error reading from new_grid.txt\n"); exit(-1);
+            op_printf("error reading from new_grid.dat\n"); exit(-1);
         }
     }
     
     for (int n=0; n<ncell; n++) {
         if (fscanf(fp,"%d %d %d %d \n",&cell[4*n  ], &cell[4*n+1],
                    &cell[4*n+2], &cell[4*n+3]) != 4) {
-            op_printf("error reading from new_grid.txt\n"); exit(-1);
+            op_printf("error reading from new_grid.dat\n"); exit(-1);
         }
     }
     
     for (int n=0; n<nedge; n++) {
         if (fscanf(fp,"%d %d %d %d \n",&edge[2*n], &edge[2*n+1],
                    &ecell[2*n],&ecell[2*n+1]) != 4) {
-            op_printf("error reading from new_grid.txt\n"); exit(-1);
+            op_printf("error reading from new_grid.dat\n"); exit(-1);
         }
     }
     
     for (int n=0; n<nbedge; n++) {
         if (fscanf(fp,"%d %d %d %d \n",&bedge[2*n],&bedge[2*n+1],
                    &becell[n], &bound[n]) != 4) {
-            op_printf("error reading from new_grid.txt\n"); exit(-1);
+            op_printf("error reading from new_grid.dat\n"); exit(-1);
         }
     }
     
@@ -254,25 +262,23 @@ int main(int argc, char **argv)
     
     // main time-marching loop
     
-    niter = 1000;
+    niter = 500;   
     
-    std::vector<std::vector<std::vector<std::vector<hpx::shared_future<double>>>>> new_data_1; //***
-    //std::vector<std::vector<std::vector<std::vector<hpx::shared_future<double>>>>> new_data_2(2); //***
-    
-    new_data_1.resize(niter);   //new_data_2.resize(niter);//***
+
+	std::vector<std::vector<hpx::future<std::vector<std::vector<double>>>>> new_data1(niter);
+	//std::vector<std::vector<std::vector<std::vector<std::vector<double>>>>> new_data1;
     
     for(int iter=1; iter<=niter; iter++) {
         
         // save old flow solution
         
-        //op_par_loop_save_soln("save_soln",cells,
-          //                    op_arg_dat(p_q,-1,OP_ID,4,"double",OP_READ),
-            //                  op_arg_dat(p_qold,-1,OP_ID,4,"double",OP_WRITE));
-        
-        new_data_1[iter].push_back(op_par_loop_save_soln("save_soln", cells, //***
-                                               op_arg_dat(p_q,   -1,OP_ID, 4,"double",OP_READ ),
-                                               op_arg_dat(p_qold,-1,OP_ID, 4,"double",OP_WRITE)));
-        
+        new_data1[iter]=op_par_loop_save_soln("save_soln", cells, op_arg_dat(p_q,-1,OP_ID, 4,"double",OP_READ ),op_arg_dat(p_qold,-1,OP_ID, 4,"double",OP_WRITE));
+
+	std::vector<std::vector<std::vector<double>>> new_data3;
+		for(int i=0; i<new_data1[iter].size(); ++i)
+			new_data3.push_back(new_data1[iter][i].get());        
+
+
         // predictor/corrector update loop
         
         for(int k=0; k<2; k++) {
@@ -319,14 +325,19 @@ int main(int argc, char **argv)
                                op_arg_gbl(&rms,1,"double",OP_INC));
         }
         
-        //hpx::wait_all(new_data_2[iter], new_data_1[iter]); //*** how to remove this synchronization
-        hpx::wait_all(new_data_1[iter]);
+
         
         // print iteration history
         rms = sqrt(rms/(double) op_get_size(cells));
         if (iter%100 == 0)
             op_printf(" %d  %10.5e \n",iter,rms);
     }
+
+
+	
+
+
+			
     
     op_timers(&cpu_t2, &wall_t2);
     
@@ -350,4 +361,12 @@ int main(int argc, char **argv)
     free(qold);
     free(res);
     free(adt);
+
+
+	return hpx::finalize();
+}
+
+
+int main(){
+	return hpx::init();
 }

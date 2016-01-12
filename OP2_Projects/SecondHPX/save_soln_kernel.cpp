@@ -3,24 +3,40 @@
 //
 
 //user function
-//#include "save_soln.h"
+#include "save_soln.h"
 
-std::vector<double> save_soln(const double *q, double *qold){
-    std::vector<double> result(4,0);
-    
-    for (int n=0; n<4; n++) qold[n] = q[n];
-    
-    result=qold;
-    return result;
+#include <iostream>
+#include <vector>
+#include <hpx/hpx_init.hpp>
+#include <hpx/hpx.hpp>
+#include <hpx/runtime/serialization/vector.hpp>
+#include <hpx/runtime/serialization/serialize.hpp>
+#include <hpx/include/async.hpp>
+#include <hpx/include/parallel_algorithm.hpp>
+#include <hpx/include/iostreams.hpp>
+#include <hpx/runtime/actions/plain_action.hpp>
+
+#include <boost/iterator/counting_iterator.hpp>
+
+
+std::vector<std::vector<double>> work(int start, int finish, op_arg arg0, op_arg arg1)
+{
+	std::vector<std::vector<double>> s_res;	
+
+        for(int n=start; n<finish; n++)
+        {
+		s_res.push_back(save_soln(&((double*)arg0.data)[4*n],&((double*)arg1.data)[4*n]));
+	}
+
+	return s_res;
 }
-
-HPX_PLAIN_ACTION(save_soln,save_soln_action);
 
 
 // host stub function
-void op_par_loop_save_soln(char const *name, op_set set,
+std::vector<hpx::future<std::vector<std::vector<double>>>> op_par_loop_save_soln(char const *name, op_set set,
                            op_arg arg0,
-                           op_arg arg1){
+                           op_arg arg1)
+{
     
     int nargs = 2;
     op_arg args[2];
@@ -46,61 +62,24 @@ void op_par_loop_save_soln(char const *name, op_set set,
     int nthreads = 1;
 #endif
     
+    	std::vector<hpx::future<std::vector<std::vector<double>>>> new_data1;
+
     if (set->size >0) {
         
         // execute plan
-//#pragma omp parallel for
-        
-        // new_data[i][0 ,1, 2] which i is thr
-        std::vector<std::vector<hpx::shared_future<double> > > new_data(2);
-        
+
         for ( int thr=0; thr<nthreads; thr++ ){
-            
-            
             
             int start  = (set->size* thr)/nthreads;
             int finish = (set->size*(thr+1))/nthreads;
-            
-            new_data[thr].resize(finish-start);
-            
-            
-            
-            new_data[blockIdx] = [start, finish, &arg0, &arg1](){
-                
-                typedef boost::counting_iterator<std::size_t> iterator;
-                std::vector<std::vector<hpx::shared_future<double>> new_data(finish-start,
-                                                                             std::vector<hpx::shared_future<double>(arg1.data->size));
-                
-                for_each(par, iterator(start), iterator(finish-1),
-                         [&new_data](std::size_t i)
-                         {
-                             
-                             new_data[i] = hpx::async<save_soln_action>(hpx::find_here(),
-                                                                        &((double*)arg0.data)[4 * i],
-                                                                        &((double*)arg1.data)[4 * i]);
-                         }
-                         
-                         
-                         return new_data;
-           };
-                         
-                         
 
-            
-            /*for ( int n=start; n<finish; n++ ){
-                save_soln(
-                          &((double*)arg0.data)[4*n],
-                          &((double*)arg1.data)[4*n]);
-            }*/
+	    new_data1.push_back(hpx::async(work,start,finish,arg0,arg1));
+
         }
-      
-        
-        
-        
+     
     }
     
-    hpx::wait_all(new_data);//wait for all blocks, but I think it will not work
-    
+ 
     // combine reduction data
     op_mpi_set_dirtybit(nargs, args);
     
@@ -111,4 +90,7 @@ void op_par_loop_save_soln(char const *name, op_set set,
     OP_kernels[0].time     += wall_t2 - wall_t1;
     OP_kernels[0].transfer += (float)set->size * arg0.size;
     OP_kernels[0].transfer += (float)set->size * arg1.size;
+
+
+	return new_data1;
 }
