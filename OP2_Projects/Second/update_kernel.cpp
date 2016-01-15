@@ -5,43 +5,8 @@
 //user function
 #include "update.h"
 
-#include <iostream>
-#include <vector>
-#include <hpx/hpx_init.hpp>
-#include <hpx/hpx.hpp>
-#include <hpx/runtime/serialization/vector.hpp>
-#include <hpx/runtime/serialization/serialize.hpp>
-#include <hpx/include/async.hpp>
-#include <hpx/include/parallel_algorithm.hpp>
-#include <hpx/include/iostreams.hpp>
-#include <hpx/runtime/actions/plain_action.hpp>
-
-#include <boost/iterator/counting_iterator.hpp>
-
-void workE(int start, int finish, int nthreads, op_arg arg0, op_arg arg1, op_arg arg2, op_arg arg3, op_arg arg4)
-{
-
-  double arg4_l[nthreads*64];
-  for ( int thr=0; thr<nthreads; thr++ ){
-    for ( int d=0; d<1; d++ ){
-      arg4_l[d+thr*64]=ZERO_double;
-    }
-  }
-      for ( int n=start; n<finish; n++ ){
-        update(
-          &((double*)arg0.data)[4*n],
-          &((double*)arg1.data)[4*n],
-          &((double*)arg2.data)[4*n],
-          &((double*)arg3.data)[1*n],
-	 // &arg4_l[64*4]);
-          &arg4_l[64*omp_get_thread_num()]);
-      }
-}
-
 // host stub function
-//std::vector<hpx::future<void>> 
-void
-op_par_loop_update(char const *name, op_set set,
+void op_par_loop_update(char const *name, op_set set,
   op_arg arg0,
   op_arg arg1,
   op_arg arg2,
@@ -70,12 +35,13 @@ op_par_loop_update(char const *name, op_set set,
 
   op_mpi_halo_exchanges(set, nargs, args);
   // set number of threads
-  #ifdef _OPENMP
+ /* #ifdef _OPENMP
     int nthreads = omp_get_max_threads();
-    //int nthreads = 4;
   #else
     int nthreads = 1;
-  #endif
+  #endif*/
+
+	int nthreads=4;
 
   // allocate and initialise arrays for global reduction
   double arg4_l[nthreads*64];
@@ -85,7 +51,6 @@ op_par_loop_update(char const *name, op_set set,
     }
   }
 
- // std::vector<hpx::future<void>> new_dataE;
 
   if (set->size >0) {
 
@@ -94,10 +59,6 @@ op_par_loop_update(char const *name, op_set set,
     for ( int thr=0; thr<nthreads; thr++ ){
       int start  = (set->size* thr)/nthreads;
       int finish = (set->size*(thr+1))/nthreads;
-
-        //new_dataE.push_back(hpx::async(workE,start,finish,nthreads,arg0,arg1,arg2,arg3,arg4));
-
-	//workE(start,finish,nthreads,arg0,arg1,arg2,arg3,arg4);
 
       for ( int n=start; n<finish; n++ ){
         update(
@@ -130,6 +91,5 @@ op_par_loop_update(char const *name, op_set set,
   OP_kernels[4].transfer += (float)set->size * arg2.size * 2.0f;
   OP_kernels[4].transfer += (float)set->size * arg3.size;
 
-	//return new_dataE;
 
 }

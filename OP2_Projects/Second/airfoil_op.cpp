@@ -111,7 +111,7 @@ std::vector<hpx::future<void>> op_par_loop_bres_calc(char const *, op_set,
   op_arg );
 
 
-//std::vector<hpx::future<void>> 
+
 void op_par_loop_update(char const *, op_set,
   op_arg,
   op_arg,
@@ -260,52 +260,49 @@ int hpx_main(int argc, char **argv)
   op_diagnostic_output();
 
   //initialise timers for total execution wall time
-  op_timers(&cpu_t1, &wall_t1);
+  //op_timers(&cpu_t1, &wall_t1);
 
   // main time-marching loop
 
   niter = 500;
    
-
+  boost::uint64_t t=hpx::util::high_resolution_clock::now();
 
   for(int iter=1; iter<=niter; iter++) {
 
     // save old flow solution
 
-    std::vector<std::vector<hpx::future<void>>> new_data1A(niter);
+    std::vector<std::vector<hpx::future<void>>> new_data1A;
 
-    new_data1A[iter]=op_par_loop_save_soln("save_soln",cells,
+
+    new_data1A.push_back(
+	op_par_loop_save_soln("save_soln",cells,
                 op_arg_dat(p_q,-1,OP_ID,4,"double",OP_READ),
-                op_arg_dat(p_qold,-1,OP_ID,4,"double",OP_WRITE));
+                op_arg_dat(p_qold,-1,OP_ID,4,"double",OP_WRITE)));
 
-    for(int i=0; i<new_data1A[iter].size();++i)
-	new_data1A[iter][i].wait();
+    for(int i=0; i<new_data1A.size();++i)
+		for(int j=0; j<new_data1A[i].size();++j)
+			new_data1A[i][j].wait();
 
     // predictor/corrector update loop
 
    for(int k=0; k<2; k++) {
 
-    std::vector<std::vector<hpx::future<void>>> new_data1B(niter);
-    std::vector<std::vector<hpx::future<void>>> new_data1C(niter);
-    std::vector<std::vector<hpx::future<void>>> new_data1D(niter);
-    std::vector<std::vector<hpx::future<void>>> new_data1E(niter);
+    std::vector<std::vector<hpx::future<void>>> new_data1B;
+    std::vector<std::vector<hpx::future<void>>> new_data1C;
+    std::vector<std::vector<hpx::future<void>>> new_data1D;
 
       // calculate area/timstep
-
-     new_data1B[iter]=op_par_loop_adt_calc("adt_calc",cells,
+     new_data1B.push_back(op_par_loop_adt_calc("adt_calc",cells,
                   op_arg_dat(p_x,0,pcell,2,"double",OP_READ),
                   op_arg_dat(p_x,1,pcell,2,"double",OP_READ),
                   op_arg_dat(p_x,2,pcell,2,"double",OP_READ),
                   op_arg_dat(p_x,3,pcell,2,"double",OP_READ),
                   op_arg_dat(p_q,-1,OP_ID,4,"double",OP_READ),
-                  op_arg_dat(p_adt,-1,OP_ID,1,"double",OP_WRITE));
-
-    for(int i=0; i<new_data1B[iter].size();++i)
-	new_data1B[iter][i].wait();
+                  op_arg_dat(p_adt,-1,OP_ID,1,"double",OP_WRITE)));
 
       // calculate flux residual
-
-     new_data1C[iter]=op_par_loop_res_calc("res_calc",edges,
+     new_data1C.push_back(op_par_loop_res_calc("res_calc",edges,
                   op_arg_dat(p_x,0,pedge,2,"double",OP_READ),
                   op_arg_dat(p_x,1,pedge,2,"double",OP_READ),
                   op_arg_dat(p_q,0,pecell,4,"double",OP_READ),
@@ -313,28 +310,31 @@ int hpx_main(int argc, char **argv)
                   op_arg_dat(p_adt,0,pecell,1,"double",OP_READ),
                   op_arg_dat(p_adt,1,pecell,1,"double",OP_READ), 
                   op_arg_dat(p_res,0,pecell,4,"double",OP_INC),  
-                  op_arg_dat(p_res,1,pecell,4,"double",OP_INC));  
+                  op_arg_dat(p_res,1,pecell,4,"double",OP_INC)));  
 
-    for(int i=0; i<new_data1C[iter].size();++i)
-	new_data1C[iter][i].wait();
-
-
-      new_data1D[iter]=op_par_loop_bres_calc("bres_calc",bedges,
+      new_data1D.push_back(op_par_loop_bres_calc("bres_calc",bedges,
                   op_arg_dat(p_x,0,pbedge,2,"double",OP_READ),
                   op_arg_dat(p_x,1,pbedge,2,"double",OP_READ),
                   op_arg_dat(p_q,0,pbecell,4,"double",OP_READ),
                   op_arg_dat(p_adt,0,pbecell,1,"double",OP_READ),
                   op_arg_dat(p_res,0,pbecell,4,"double",OP_INC),
-                  op_arg_dat(p_bound,-1,OP_ID,1,"int",OP_READ));
+                  op_arg_dat(p_bound,-1,OP_ID,1,"int",OP_READ)));
 
-   for(int i=0; i<new_data1D[iter].size();++i)
-	new_data1D[iter][i].wait();
+    for(int i=0; i<new_data1B.size();++i)
+		for(int j=0; j<new_data1B[i].size();++j)
+			new_data1B[i][j].wait();
+
+    for(int i=0; i<new_data1C.size();++i)
+		for(int j=0; j<new_data1C[i].size();++j)
+			new_data1C[i][j].wait();
+
+    for(int i=0; i<new_data1D.size();++i)
+		for(int j=0; j<new_data1D[i].size();++j)
+			new_data1D[i][j].wait();
 
       // update flow field
-
       rms = 0.0;
 
-//      new_data1E[iter]=
 	op_par_loop_update("update",cells,
                   op_arg_dat(p_qold,-1,OP_ID,4,"double",OP_READ),
                   op_arg_dat(p_q,-1,OP_ID,4,"double",OP_WRITE),
@@ -342,8 +342,6 @@ int hpx_main(int argc, char **argv)
                   op_arg_dat(p_adt,-1,OP_ID,1,"double",OP_READ),
                   op_arg_gbl(&rms,1,"double",OP_INC));
 
-  // for(int i=0; i<new_data1E[iter].size();++i)
-	//new_data1E[iter][i].wait();
     }
 
     // print iteration history
@@ -352,14 +350,22 @@ int hpx_main(int argc, char **argv)
       op_printf(" %d  %10.5e \n",iter,rms);
   }
 
-  op_timers(&cpu_t2, &wall_t2);
+  std::cout<<std::endl;
+
+  boost::uint64_t elapsed=hpx::util::high_resolution_clock::now()-t;
+  std::cout<<(boost::format("%.14g")%(elapsed/ 1e9)) <<std::flush;
+
+  std::cout<<std::endl;
+  std::cout<<std::endl;
+
+  //op_timers(&cpu_t2, &wall_t2);
 
   //output the result dat array to files
   op_print_dat_to_txtfile(p_q, "out_grid_seq.dat"); //ASCI
   op_print_dat_to_binfile(p_q, "out_grid_seq.bin"); //Binary
 
-  op_timing_output();
-  op_printf("Max total runtime = \n%f\n",wall_t2-wall_t1);
+  //op_timing_output();
+  //op_printf("Max total runtime = \n%f\n",wall_t2-wall_t1);
 
   op_exit();
 

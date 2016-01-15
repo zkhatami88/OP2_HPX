@@ -26,7 +26,9 @@ void work(int start, int finish, op_arg arg0, op_arg arg1)
 
 
 // host stub function
-std::vector<hpx::future<void>> op_par_loop_save_soln(char const *name, op_set set,
+std::vector<hpx::future<void>> 
+//void
+op_par_loop_save_soln(char const *name, op_set set,
   op_arg arg0,
   op_arg arg1){
 
@@ -36,7 +38,7 @@ std::vector<hpx::future<void>> op_par_loop_save_soln(char const *name, op_set se
   args[0] = arg0;
   args[1] = arg1;
 
-  // initialise timers
+   //initialise timers
   double cpu_t1, cpu_t2, wall_t1, wall_t2;
   op_timing_realloc(0);
   op_timers_core(&cpu_t1, &wall_t1);
@@ -48,13 +50,16 @@ std::vector<hpx::future<void>> op_par_loop_save_soln(char const *name, op_set se
 
   op_mpi_halo_exchanges(set, nargs, args);
   // set number of threads
-  #ifdef _OPENMP
+/*  #ifdef _OPENMP
     int nthreads = omp_get_max_threads();
   #else
     int nthreads = 1;
   #endif
+*/
 
+	int nthreads=4;
 	std::vector<hpx::future<void>> new_data;
+	new_data.reserve(nthreads);
 
   if (set->size >0) {
 
