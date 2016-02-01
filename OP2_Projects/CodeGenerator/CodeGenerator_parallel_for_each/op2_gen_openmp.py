@@ -225,7 +225,7 @@ def op2_gen_openmp(master, date, consts, kernels):
       code('#include <hpx/hpx_init.hpp>')
       code('#include <hpx/hpx.hpp>')
       code('#include <hpx/include/parallel_algorithm.hpp>')
-      code('#include <hpx/include/parallel_executor_parameters.hpp>"')
+      code('#include <hpx/include/parallel_executor_parameters.hpp>')
       code('#include <hpx/include/iostreams.hpp>')
 
     comm('')
@@ -723,8 +723,10 @@ def op2_gen_openmp(master, date, consts, kernels):
 #
     else:
       comm(' execute plan')
-      code('#pragma omp parallel for')
-      FOR('thr','0','nthreads')
+      #code('#pragma omp parallel for')
+      code('auto r=boost::irange(0, nthreads);')
+      code('hpx::parallel::for_each(hpx::parallel::par,r.begin(), r.end(),[&](std::size_t thr){')
+      #FOR('thr','0','nthreads')
       code('int start  = (set->size* thr)/nthreads;')
       code('int finish = (set->size*(thr+1))/nthreads;')
       code('op_x86_'+name+'(')
@@ -737,7 +739,11 @@ def op2_gen_openmp(master, date, consts, kernels):
           code(indent+'(TYP *) ARG.data,')
 
       code('start, finish );')
-      ENDFOR()
+      #ENDFOR()
+
+      code('});')
+      code('')
+
 
     if ninds>0:
       code('op_timing_realloc('+str(nk)+');')

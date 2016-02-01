@@ -234,7 +234,7 @@ def op2_gen_seq(master, date, consts, kernels):
       code('#include <hpx/hpx_init.hpp>')
       code('#include <hpx/hpx.hpp>')
       code('#include <hpx/include/parallel_algorithm.hpp>')
-      code('#include <hpx/include/parallel_executor_parameters.hpp>"')
+      code('#include <hpx/include/parallel_executor_parameters.hpp>')
       code('#include <hpx/include/iostreams.hpp>')
 
 ##########################################################################
