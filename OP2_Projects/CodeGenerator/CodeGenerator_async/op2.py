@@ -676,7 +676,7 @@ def main():
                 fid.write(indent[0:-2] + 'op_decl_const2("' + name.strip() +
                           '",' + str(const_args[curr_const]['dim']) + ',' +
                           const_args[curr_const]['type'] + ',' +
-                          const_args[curr_const]['name2'].strip() + '));') 
+                          const_args[curr_const]['name2'].strip() + ');') 
                 loc_old = endofcall + 1
                 continue
 

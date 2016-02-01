@@ -233,7 +233,7 @@ def op2_gen_openmp_simple(master, date, consts, kernels):
     elif CPP:
       code('#include "'+name+'.h"')
       code('#include <vector>')
-      code('#include <hpx/hpx-init.hpp>')
+      code('#include <hpx/hpx_init.hpp>')
       code('#include <hpx/hpx.hpp>')
       code('#include <hpx/include/async.hpp>')
 
@@ -248,25 +248,24 @@ def op2_gen_openmp_simple(master, date, consts, kernels):
 ## Start
 
     if ninds>0:
-    	code('void work'+name+'(char const *name, op_set set,')
+    	code('void work'+name+'(int offset_b, int nelem,')
 
     	depth += 2
 
+        for m in unique_args:
+          g_m = m - 1
+          if m == unique_args[len(unique_args)-1]:
+            code('op_arg ARG){');
+            code('')
+          else:
+            code('op_arg ARG,')
 
-    	for m in unique_args:
-      		g_m = m - 1
-      	if m == unique_args[len(unique_args)-1]:
-        	code('op_arg ARG){');
-        	code('')
-      	else:
-        	code('op_arg ARG,')
-
-    	for g_m in range (0,nargs):
-      		if maps[g_m]==OP_GBL and accs[g_m] <> OP_READ:
-        		code('TYP*ARGh = (TYP *)ARG.data;')
+        for g_m in range (0,nargs):
+          if maps[g_m]==OP_GBL and accs[g_m] <> OP_READ:
+            code('TYP*ARGh = (TYP *)ARG.data;')
 ##
 
-    	FOR('blockIdx','0','nblocks')
+    	FOR('n','offset_b','offset_b+nelem')
     	if ninds>0:
 
       		if nmaps > 0:
@@ -452,6 +451,7 @@ def op2_gen_openmp_simple(master, date, consts, kernels):
       for g_m in range (0,nargs):
         if maps[g_m]==OP_GBL and accs[g_m] <> OP_READ:
           code('TYP*ARGh = (TYP *)ARG.data;')
+      code(');')
 
 #      FOR('n','offset_b','offset_b+nelem')
 #      if nmaps > 0:

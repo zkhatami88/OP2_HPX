@@ -4,9 +4,14 @@
 
 //user function
 #include "update.h"
+#include <vector>
+#include <hpx/hpx_init.hpp>
+#include <hpx/hpx.hpp>
+#include <hpx/include/async.hpp>
 
 // host stub function
-void op_par_loop_update(char const *name, op_set set,
+
+std::vector<hpx::future<void>> op_par_loop_update(char const *name, op_set set,
   op_arg arg0,
   op_arg arg1,
   op_arg arg2,
@@ -35,12 +40,11 @@ void op_par_loop_update(char const *name, op_set set,
 
   op_mpi_halo_exchanges(set, nargs, args);
   // set number of threads
-   #ifdef _OPENMP
+  #ifdef _OPENMP
     int nthreads = omp_get_max_threads();
   #else
     int nthreads = 1;
   #endif
-
 
   // allocate and initialise arrays for global reduction
   double arg4_l[nthreads*64];
@@ -50,7 +54,7 @@ void op_par_loop_update(char const *name, op_set set,
     }
   }
 
-
+  std::vector<hpx::future<void>> new_data;
   if (set->size >0) {
 
     // execute plan
@@ -58,14 +62,12 @@ void op_par_loop_update(char const *name, op_set set,
     for ( int thr=0; thr<nthreads; thr++ ){
       int start  = (set->size* thr)/nthreads;
       int finish = (set->size*(thr+1))/nthreads;
-
       for ( int n=start; n<finish; n++ ){
         update(
           &((double*)arg0.data)[4*n],
           &((double*)arg1.data)[4*n],
           &((double*)arg2.data)[4*n],
           &((double*)arg3.data)[1*n],
-	 // &arg4_l[64*4]);
           &arg4_l[64*omp_get_thread_num()]);
       }
     }
@@ -89,6 +91,5 @@ void op_par_loop_update(char const *name, op_set set,
   OP_kernels[4].transfer += (float)set->size * arg1.size;
   OP_kernels[4].transfer += (float)set->size * arg2.size * 2.0f;
   OP_kernels[4].transfer += (float)set->size * arg3.size;
-
-
+return new_data;
 }

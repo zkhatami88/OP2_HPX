@@ -4,31 +4,35 @@
 
 //user function
 #include "adt_calc.h"
-
 #include <vector>
 #include <hpx/hpx_init.hpp>
 #include <hpx/hpx.hpp>
 #include <hpx/include/async.hpp>
 
-void workB(int offset_b, int nelem, op_arg arg0, op_arg arg1, op_arg arg2, op_arg arg3, op_arg arg4, op_arg arg5)
-{
-        for ( int n=offset_b; n<offset_b+nelem; n++ ){
-          int map0idx = arg0.map_data[n * arg0.map->dim + 0];
-          int map1idx = arg0.map_data[n * arg0.map->dim + 1];
-          int map2idx = arg0.map_data[n * arg0.map->dim + 2];
-          int map3idx = arg0.map_data[n * arg0.map->dim + 3];
-
-          adt_calc(
-            &((double*)arg0.data)[2 * map0idx],
-            &((double*)arg0.data)[2 * map1idx],
-            &((double*)arg0.data)[2 * map2idx],
-            &((double*)arg0.data)[2 * map3idx],
-            &((double*)arg4.data)[4 * n],
-            &((double*)arg5.data)[1 * n]);
-        }
-}
-
 // host stub function
+void workadt_calc(int offset_b, int nelem,
+  op_arg arg0,
+  op_arg arg1,
+  op_arg arg2,
+  op_arg arg3,
+  op_arg arg4,
+  op_arg arg5){
+
+  for ( int n=offset_b; n<offset_b+nelem; n++ ){
+    int map0idx = arg0.map_data[n * arg0.map->dim + 0];
+    int map1idx = arg0.map_data[n * arg0.map->dim + 1];
+    int map2idx = arg0.map_data[n * arg0.map->dim + 2];
+    int map3idx = arg0.map_data[n * arg0.map->dim + 3];
+
+    adt_calc(
+      &((double*)arg0.data)[2 * map0idx],
+      &((double*)arg0.data)[2 * map1idx],
+      &((double*)arg0.data)[2 * map2idx],
+      &((double*)arg0.data)[2 * map3idx],
+      &((double*)arg4.data)[4 * n],
+      &((double*)arg5.data)[1 * n]);
+  }
+}
 
 std::vector<hpx::future<void>> op_par_loop_adt_calc(char const *name, op_set set,
   op_arg arg0,
@@ -69,8 +73,7 @@ std::vector<hpx::future<void>> op_par_loop_adt_calc(char const *name, op_set set
 
   int set_size = op_mpi_halo_exchanges(set, nargs, args);
 
-  std::vector<hpx::future<void>> new_dataB;
-
+  std::vector<hpx::future<void>> new_data;
   if (set->size >0) {
 
     op_plan *Plan = op_plan_get(name,set,part_size,nargs,args,ninds,inds);
@@ -82,14 +85,20 @@ std::vector<hpx::future<void>> op_par_loop_adt_calc(char const *name, op_set set
         op_mpi_wait_all(nargs, args);
       }
       int nblocks = Plan->ncolblk[col];
-      
+
       for ( int blockIdx=0; blockIdx<nblocks; blockIdx++ ){
         int blockId  = Plan->blkmap[blockIdx + block_offset];
         int nelem    = Plan->nelems[blockId];
         int offset_b = Plan->offset[blockId];
-        
-        new_dataB.push_back(hpx::async(workB,offset_b,nelem,arg0,arg1,arg2,arg3,arg4,arg5));
+        new_data.push_back(hpx::async(workadt_calc,offset_b,nelem,
+        arg0,
+        arg1,
+        arg2,
+        arg3,
+        arg4,
+        arg5)
 
+        );
       }
 
       block_offset += nblocks;
@@ -109,6 +118,5 @@ std::vector<hpx::future<void>> op_par_loop_adt_calc(char const *name, op_set set
   OP_kernels[1].name      = name;
   OP_kernels[1].count    += 1;
   OP_kernels[1].time     += wall_t2 - wall_t1;
-
-	return new_dataB;
+return new_data;
 }

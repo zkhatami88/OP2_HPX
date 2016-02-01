@@ -394,65 +394,7 @@ def op2_gen_mpi_vec(master, date, consts, kernels):
 
     code('')
     comm(' host stub function')
-    #code('void op_par_loop_'+name+'(char const *name, op_set set,')
-
-## Start
-
-    if ninds>0:
-    	code('void work'+name+'(char const *name, op_set set,')
-
-    	depth += 2
-
-
-    	for m in unique_args:
-      		g_m = m - 1
-      	if m == unique_args[len(unique_args)-1]:
-        	code('op_arg ARG){');
-        	code('')
-      	else:
-        	code('op_arg ARG,')
-
-    	for g_m in range (0,nargs):
-      		if maps[g_m]==OP_GBL and accs[g_m] <> OP_READ:
-        		code('TYP*ARGh = (TYP *)ARG.data;')
-##
-
-    	FOR('blockIdx','0','nblocks')
-    	if ninds>0:
-
-      		if nmaps > 0:
-        		k = []
-        	for g_m in range(0,nargs):
-          		if maps[g_m] == OP_MAP and (not mapinds[g_m] in k):
-            			k = k + [mapinds[g_m]]
-            			code('int map'+str(mapinds[g_m])+'idx = arg'+str(invmapinds[inds[g_m]-1])+'.map_data[n * arg'+str(invmapinds[inds[g_m]-1])+'.map->dim + '+str(idxs[g_m])+'];')
-      	code('')
-      	line = name+'('
-      	indent = '\n'+' '*(depth+2)
-      	for g_m in range(0,nargs):
-        	if maps[g_m] == OP_ID:
-          		line = line + indent + '&(('+typs[g_m]+'*)arg'+str(g_m)+'.data)['+str(dims[g_m])+' * n]'
-        	if maps[g_m] == OP_MAP:
-          		line = line + indent + '&(('+typs[g_m]+'*)arg'+str(invinds[inds[g_m]-1])+'.data)['+str(dims[g_m])+' * map'+str(mapinds[g_m])+'idx]'
-        	if maps[g_m] == OP_GBL:
-          		line = line + indent +'('+typs[g_m]+'*)arg'+str(g_m)+'.data'
-        	if g_m < nargs-1:
-          		line = line +','
-        	else:
-           		line = line +');'
-      	code(line)
-      	ENDFOR()
-
-    	ENDFOR()
-
-
-## End
-
-    code('')
-
-    code('std::vector<hpx::future<void>> op_par_loop_'+name+'(char const *name, op_set set,')
-
-
+    code('void op_par_loop_'+name+'(char const *name, op_set set,')
     depth += 2
 
     for m in unique_args:
@@ -649,31 +591,31 @@ def op2_gen_mpi_vec(master, date, consts, kernels):
       IF('n==set->core_size')
       code('op_mpi_wait_all(nargs, args);')
       ENDIF()
-#     if nmaps > 0:
-#        k = []
-#        print name
-#        print maps
-#        print mapinds
-#        for g_m in range(0,nargs):
-#          print g_m
-#          if maps[g_m] == OP_MAP and (not mapinds[g_m] in k):
-#            k = k + [mapinds[g_m]]
-#            code('int map'+str(mapinds[g_m])+'idx = arg'+str(invmapinds[inds[g_m]-1])+'.map_data[n * arg'+str(invmapinds[inds[g_m]-1])+'.map->dim + '+str(idxs[g_m])+'];')
-#      code('')
-#      line = name+'('
-#      indent = '\n'+' '*(depth+2)
-#      for g_m in range(0,nargs):
-#        if maps[g_m] == OP_ID:
-#          line = line + indent + '&(ptr'+str(g_m)+')['+str(dims[g_m])+' * n]'
-#        if maps[g_m] == OP_MAP:
-#          line = line + indent + '&(ptr'+str(g_m)+')['+str(dims[g_m])+' * map'+str(mapinds[g_m])+'idx]'
-#        if maps[g_m] == OP_GBL:
-#          line = line + indent +'('+typs[g_m]+'*)arg'+str(g_m)+'.data'
-#        if g_m < nargs-1:
-#          line = line +','
-#        else:
-#           line = line +');'
-#      code(line)
+      if nmaps > 0:
+        k = []
+        print name
+        print maps
+        print mapinds
+        for g_m in range(0,nargs):
+          print g_m
+          if maps[g_m] == OP_MAP and (not mapinds[g_m] in k):
+            k = k + [mapinds[g_m]]
+            code('int map'+str(mapinds[g_m])+'idx = arg'+str(invmapinds[inds[g_m]-1])+'.map_data[n * arg'+str(invmapinds[inds[g_m]-1])+'.map->dim + '+str(idxs[g_m])+'];')
+      code('')
+      line = name+'('
+      indent = '\n'+' '*(depth+2)
+      for g_m in range(0,nargs):
+        if maps[g_m] == OP_ID:
+          line = line + indent + '&(ptr'+str(g_m)+')['+str(dims[g_m])+' * n]'
+        if maps[g_m] == OP_MAP:
+          line = line + indent + '&(ptr'+str(g_m)+')['+str(dims[g_m])+' * map'+str(mapinds[g_m])+'idx]'
+        if maps[g_m] == OP_GBL:
+          line = line + indent +'('+typs[g_m]+'*)arg'+str(g_m)+'.data'
+        if g_m < nargs-1:
+          line = line +','
+        else:
+           line = line +');'
+      code(line)
       ENDFOR()
 
 #
@@ -775,7 +717,6 @@ def op2_gen_mpi_vec(master, date, consts, kernels):
     code('OP_kernels[' +str(nk)+ '].count    += 1;')
     code('OP_kernels[' +str(nk)+ '].time     += wall_t2 - wall_t1;')
 
-
     if ninds == 0:
       line = 'OP_kernels['+str(nk)+'].transfer += (float)set->size *'
 
@@ -787,7 +728,6 @@ def op2_gen_mpi_vec(master, date, consts, kernels):
             code(line+' ARG.size * 2.0f;')
 
     depth -= 2
-    code('return new_data;')
     code('}')
 
 

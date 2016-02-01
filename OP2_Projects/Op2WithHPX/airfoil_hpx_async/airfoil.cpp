@@ -90,14 +90,13 @@ int hpx_main(int argc, char** argv){
 
   //timer
   double cpu_t1, cpu_t2, wall_t1, wall_t2;
-  hpx::future<void> myvar;
   // read in grid
 
   op_printf("reading in grid \n");
 
   FILE *fp;
   //if ( (fp = fopen("./new_grid.dat","r")) == NULL) {  
-  if((fp=fopen("./new_grid.dat","r"))==NULL){
+  if((fp=fopen("../../FirstHPX/new_grid.dat","r"))==NULL){
     op_printf("can't open file new_grid.dat\n"); exit(-1);
   }
 
@@ -210,15 +209,19 @@ int hpx_main(int argc, char** argv){
 
   // main time-marching loop
 
-  niter = 1000;
+  niter = 500;
 
   for(int iter=1; iter<=niter; iter++) {
 
+    std::vector<std::vector<hpx::future<void>>> new_data1;
+
     // save old flow solution
 
+    new_data1.push_back(
     op_par_loop(save_soln,"save_soln", cells,
       op_arg_dat(p_q,   -1,OP_ID, 4,"double",OP_READ ),
-      op_arg_dat(p_qold,-1,OP_ID, 4,"double",OP_WRITE));
+      op_arg_dat(p_qold,-1,OP_ID, 4,"double",OP_WRITE)));
+
 
     // predictor/corrector update loop
 
@@ -226,16 +229,27 @@ int hpx_main(int argc, char** argv){
 
       // calculate area/timstep
 
+      std::vector<std::vector<hpx::future<void>>> new_data2;
+      std::vector<std::vector<hpx::future<void>>> new_data3;
+      std::vector<std::vector<hpx::future<void>>> new_data4;
+      std::vector<std::vector<hpx::future<void>>> new_data5;
+
+      new_data2.push_back(
       op_par_loop(adt_calc,"adt_calc",cells,
           op_arg_dat(p_x,   0,pcell, 2,"double",OP_READ ),
           op_arg_dat(p_x,   1,pcell, 2,"double",OP_READ ),
           op_arg_dat(p_x,   2,pcell, 2,"double",OP_READ ),
           op_arg_dat(p_x,   3,pcell, 2,"double",OP_READ ),
           op_arg_dat(p_q,  -1,OP_ID, 4,"double",OP_READ ),
-          op_arg_dat(p_adt,-1,OP_ID, 1,"double",OP_WRITE));
+          op_arg_dat(p_adt,-1,OP_ID, 1,"double",OP_WRITE)));
+
+      for(int i=0; i<new_data2.size();++i)
+	  for(int j=0; j<new_data2[i].size();++j)
+	      new_data2[i][j].wait();
 
       // calculate flux residual
 
+      new_data3.push_back(
       op_par_loop(res_calc,"res_calc",edges,
           op_arg_dat(p_x,    0,pedge, 2,"double",OP_READ),
           op_arg_dat(p_x,    1,pedge, 2,"double",OP_READ),
@@ -244,26 +258,37 @@ int hpx_main(int argc, char** argv){
           op_arg_dat(p_adt,  0,pecell,1,"double",OP_READ),
           op_arg_dat(p_adt,  1,pecell,1,"double",OP_READ),
           op_arg_dat(p_res,  0,pecell,4,"double",OP_INC ),
-          op_arg_dat(p_res,  1,pecell,4,"double",OP_INC ));
+          op_arg_dat(p_res,  1,pecell,4,"double",OP_INC )));
 
+      for(int i=0; i<new_data3.size();++i)
+	  for(int j=0; j<new_data3[i].size();++j)
+	      new_data3[i][j].wait();
+
+      new_data4.push_back(
       op_par_loop(bres_calc,"bres_calc",bedges,
           op_arg_dat(p_x,     0,pbedge, 2,"double",OP_READ),
           op_arg_dat(p_x,     1,pbedge, 2,"double",OP_READ),
           op_arg_dat(p_q,     0,pbecell,4,"double",OP_READ),
           op_arg_dat(p_adt,   0,pbecell,1,"double",OP_READ),
           op_arg_dat(p_res,   0,pbecell,4,"double",OP_INC ),
-          op_arg_dat(p_bound,-1,OP_ID  ,1,"int",  OP_READ));
+          op_arg_dat(p_bound,-1,OP_ID  ,1,"int",  OP_READ)));
+
+      for(int i=0; i<new_data4.size();++i)
+	  for(int j=0; j<new_data4[i].size();++j)
+	      new_data4[i][j].wait();
 
       // update flow field
 
       rms = 0.0;
 
+      new_data5.push_back(
       op_par_loop(update,"update",cells,
           op_arg_dat(p_qold,-1,OP_ID, 4,"double",OP_READ ),
           op_arg_dat(p_q,   -1,OP_ID, 4,"double",OP_WRITE),
           op_arg_dat(p_res, -1,OP_ID, 4,"double",OP_RW   ),
           op_arg_dat(p_adt, -1,OP_ID, 1,"double",OP_READ ),
-          op_arg_gbl(&rms,1,"double",OP_INC));
+          op_arg_gbl(&rms,1,"double",OP_INC)));
+
     }
 
     // print iteration history

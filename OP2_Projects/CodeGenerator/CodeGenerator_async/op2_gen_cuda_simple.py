@@ -591,8 +591,7 @@ def op2_gen_cuda_simple(master, date, consts, kernels,sets):
 
     code('')
     comm('host stub function')
-    #code('void op_par_loop_'+name+'(char const *name, op_set set,')
-    code('std::vector<hpx::future<void>> op_par_loop_'+name+'(char const *name, op_set set,')
+    code('void op_par_loop_'+name+'(char const *name, op_set set,')
     depth += 2
 
     for m in unique_args:
@@ -901,7 +900,6 @@ def op2_gen_cuda_simple(master, date, consts, kernels,sets):
     comm('update kernel record')
     code('op_timers_core(&cpu_t2, &wall_t2);')
     code('OP_kernels[' +str(nk)+ '].time     += wall_t2 - wall_t1;')
-    code('return new_data;')
 
     if ninds == 0:
       line = 'OP_kernels['+str(nk)+'].transfer += (float)set->size *'

@@ -631,7 +631,8 @@ def main():
                 fid.write('//\n// op_par_loop declarations\n//\n')
                 for k_iter in range(0, len(kernels_in_files[a - 1])):
                     k = kernels_in_files[a - 1][k_iter]
-                    line = '\nvoid op_par_loop_' + \
+                    #line = '\nvoid op_par_loop_' + \ ###
+                    line = '\nstd::vector<hpx::future<void>> op_par_loop_' + \
                         kernels[k]['name'] + '(char const *, op_set,\n'
                     for n in range(1, kernels[k]['nargs']):
                         line = line + '  op_arg,\n'
@@ -662,8 +663,8 @@ def main():
                         line = line + elem['type'] + '(' + elem['data'] + \
                             ',' + elem['dim'] + ',' + elem['typ'] + \
                             ',' + elem['acc'] + '),\n' + indent
-
-                fid.write(line[0:-len(indent) - 2] + ');')
+##
+                fid.write(line[0:-len(indent) - 2] + '));') 
 
                 loc_old = endofcall + 1
                 continue
@@ -675,7 +676,7 @@ def main():
                 fid.write(indent[0:-2] + 'op_decl_const2("' + name.strip() +
                           '",' + str(const_args[curr_const]['dim']) + ',' +
                           const_args[curr_const]['type'] + ',' +
-                          const_args[curr_const]['name2'].strip() + ');')
+                          const_args[curr_const]['name2'].strip() + ');') 
                 loc_old = endofcall + 1
                 continue
 

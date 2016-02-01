@@ -3,11 +3,15 @@
 //
 
 //user function
-
 #include "save_soln.h"
+#include <vector>
+#include <hpx/hpx_init.hpp>
+#include <hpx/hpx.hpp>
+#include <hpx/include/async.hpp>
 
 // host stub function
-void op_par_loop_save_soln(char const *name, op_set set,
+
+std::vector<hpx::future<void>> op_par_loop_save_soln(char const *name, op_set set,
   op_arg arg0,
   op_arg arg1){
 
@@ -35,6 +39,7 @@ void op_par_loop_save_soln(char const *name, op_set set,
     int nthreads = 1;
   #endif
 
+  std::vector<hpx::future<void>> new_data;
   if (set->size >0) {
 
     // execute plan
@@ -60,4 +65,5 @@ void op_par_loop_save_soln(char const *name, op_set set,
   OP_kernels[0].time     += wall_t2 - wall_t1;
   OP_kernels[0].transfer += (float)set->size * arg0.size;
   OP_kernels[0].transfer += (float)set->size * arg1.size;
+return new_data;
 }

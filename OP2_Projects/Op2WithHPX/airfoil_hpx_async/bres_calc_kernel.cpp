@@ -4,31 +4,35 @@
 
 //user function
 #include "bres_calc.h"
-
 #include <vector>
 #include <hpx/hpx_init.hpp>
 #include <hpx/hpx.hpp>
 #include <hpx/include/async.hpp>
 
+// host stub function
+void workbres_calc(int offset_b, int nelem,
+  op_arg arg0,
+  op_arg arg1,
+  op_arg arg2,
+  op_arg arg3,
+  op_arg arg4,
+  op_arg arg5){
 
-void workD(int offset_b, int nelem, op_arg arg0, op_arg arg1, op_arg arg2, op_arg arg3, op_arg arg4, op_arg arg5)
-{
-       for ( int n=offset_b; n<offset_b+nelem; n++ ){
-          int map0idx = arg0.map_data[n * arg0.map->dim + 0];
-          int map1idx = arg0.map_data[n * arg0.map->dim + 1];
-          int map2idx = arg2.map_data[n * arg2.map->dim + 0];
+  for ( int n=offset_b; n<offset_b+nelem; n++ ){
+    int map0idx = arg0.map_data[n * arg0.map->dim + 0];
+    int map1idx = arg0.map_data[n * arg0.map->dim + 1];
+    int map2idx = arg2.map_data[n * arg2.map->dim + 0];
 
-          bres_calc(
-            &((double*)arg0.data)[2 * map0idx],
-            &((double*)arg0.data)[2 * map1idx],
-            &((double*)arg2.data)[4 * map2idx],
-            &((double*)arg3.data)[1 * map2idx],
-            &((double*)arg4.data)[4 * map2idx],
-            &((int*)arg5.data)[1 * n]);
-        }
+    bres_calc(
+      &((double*)arg0.data)[2 * map0idx],
+      &((double*)arg0.data)[2 * map1idx],
+      &((double*)arg2.data)[4 * map2idx],
+      &((double*)arg3.data)[1 * map2idx],
+      &((double*)arg4.data)[4 * map2idx],
+      &((int*)arg5.data)[1 * n]);
+  }
 }
 
-// host stub function
 std::vector<hpx::future<void>> op_par_loop_bres_calc(char const *name, op_set set,
   op_arg arg0,
   op_arg arg1,
@@ -68,8 +72,7 @@ std::vector<hpx::future<void>> op_par_loop_bres_calc(char const *name, op_set se
 
   int set_size = op_mpi_halo_exchanges(set, nargs, args);
 
-  std::vector<hpx::future<void>> new_dataD;
-
+  std::vector<hpx::future<void>> new_data;
   if (set->size >0) {
 
     op_plan *Plan = op_plan_get(name,set,part_size,nargs,args,ninds,inds);
@@ -82,14 +85,19 @@ std::vector<hpx::future<void>> op_par_loop_bres_calc(char const *name, op_set se
       }
       int nblocks = Plan->ncolblk[col];
 
-
       for ( int blockIdx=0; blockIdx<nblocks; blockIdx++ ){
         int blockId  = Plan->blkmap[blockIdx + block_offset];
         int nelem    = Plan->nelems[blockId];
         int offset_b = Plan->offset[blockId];
+        new_data.push_back(hpx::async(workbres_calc,offset_b,nelem,
+        arg0,
+        arg1,
+        arg2,
+        arg3,
+        arg4,
+        arg5)
 
-        new_dataD.push_back(hpx::async(workD,offset_b,nelem,arg0,arg1,arg2,arg3,arg4,arg5));
- 
+        );
       }
 
       block_offset += nblocks;
@@ -109,6 +117,5 @@ std::vector<hpx::future<void>> op_par_loop_bres_calc(char const *name, op_set se
   OP_kernels[3].name      = name;
   OP_kernels[3].count    += 1;
   OP_kernels[3].time     += wall_t2 - wall_t1;
-
-	return new_dataD;
+return new_data;
 }
