@@ -1,0 +1,91 @@
+\relax 
+\providecommand\zref@newlabel[2]{}
+\citation{r11,r12}
+\citation{r7}
+\citation{r14}
+\citation{r19}
+\citation{r6}
+\citation{r7}
+\citation{o9,o10,o11}
+\citation{o1}
+\citation{o2,o12}
+\citation{o2,o3}
+\providecommand \oddpage@label [2]{}
+\select@language{english}
+\@writefile{toc}{\select@language{english}}
+\@writefile{lof}{\select@language{english}}
+\@writefile{lot}{\select@language{english}}
+\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{}}
+\citation{o1}
+\citation{o2,o3,o4}
+\citation{o4}
+\citation{o2,o7}
+\citation{o1}
+\citation{o3,o4}
+\citation{o8}
+\citation{o3}
+\citation{r6}
+\citation{r15}
+\citation{r19}
+\citation{r20}
+\citation{o8}
+\@writefile{toc}{\contentsline {section}{\numberline {II}OP2}{}}
+\newlabel{sec:op2}{{II}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {III}HPX}{}}
+\newlabel{sec:hpx}{{III}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Airfoil code with HPX}{}}
+\newlabel{sec:air}{{IV}{}}
+\citation{o8}
+\citation{r23}
+\citation{hpx_v0.9.11}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The principle of operation of a \textit  {$future$} in HPX\relax }}{}}
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{f4}{{1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Five loops are used in \texttt  {airfoil.cpp} for saving old data values, applying the computation on each data value and updating them. \texttt  {save\_soln}, and \texttt  {update} loops are direct loops and the others are indirect one.}\relax }}{}}
+\newlabel{l1}{{2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {\texttt  {\#pragma omp parallel for} is used for loop parallelization in OP2 for Airfoil application to obtain the loop parallelization on one node and also on the distributed nodes using MPI.}\relax }}{}}
+\newlabel{l2}{{3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-A}}\texttt  {hpx::parallel::for\_each}}{}}
+\newlabel{sec:for}{{\unhbox \voidb@x \hbox {IV-A}}{}}
+\citation{hpx_v0.9.11}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Implementing \texttt  {hpx::parallel::for\_each} for loop parallelization in OP2 for Airfoil application. HPX is able to control a grain size in this method. As a result, it helps in reducing processor starvation caused by the fork-join barrier at the end of the execution of the parallel loop.}\relax }}{}}
+\newlabel{l3}{{4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-B}}\texttt  {hpx::async}}{}}
+\newlabel{sec:async}{{\unhbox \voidb@x \hbox {IV-B}}{}}
+\newlabel{l5a}{{5a}{}}
+\newlabel{sub@l5a}{{a}{}}
+\newlabel{l5b}{{5b}{}}
+\newlabel{sub@l5b}{{b}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Implementing \texttt  {hpx::async} for loop parallelization in OP2 for Airfoil application. It makes the invocation of the loop asynchronous and return $future$, which is is stored in \texttt  {new\_data}. \texttt  {hpx::async} allows the asynchronization within the executed loop.}\relax }}{}}
+\newlabel{l5}{{5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Experimental Results}{}}
+\newlabel{sec:res}{{V}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {\texttt  {airfoil.cpp} is changed for using \texttt  {hpx::async} for loop parallelization in OP2. \texttt  {new\_data} is returned from each kernel function after calling \texttt  {op\_par\_loop} and \texttt  {hpx::wait\_all} is used after each loop till completing the results related to the previous loops.}\relax }}{}}
+\newlabel{l4}{{6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Conclusion and Future Works}{}}
+\newlabel{sec:future}{{VI}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Comparison results of strong scaling between \texttt  {\#pragma omp parallel for}, \texttt  {hpx::parallel::for\_each} and \texttt  {hpx::async} used for Airfoil application, with up to 64 threads. The results illustrate a better performance by \texttt  {hpx::parallel::for\_each} for the larger number of threads, which is due to control a grain size with HPX and as a result reducing a resource starvation.}\relax }}{}}
+\newlabel{f1}{{7}{}}
+\bibdata{References}
+\bibcite{r11}{1}
+\bibcite{r12}{2}
+\bibcite{r7}{3}
+\bibcite{r14}{4}
+\bibcite{r19}{5}
+\bibcite{r6}{6}
+\bibcite{o9}{7}
+\bibcite{o10}{8}
+\bibcite{o11}{9}
+\bibcite{o1}{10}
+\bibcite{o2}{11}
+\bibcite{o3}{12}
+\bibcite{o12}{13}
+\bibcite{o4}{14}
+\bibcite{o7}{15}
+\bibcite{o8}{16}
+\bibcite{r15}{17}
+\bibcite{r20}{18}
+\bibcite{r23}{19}
+\bibcite{hpx_v0.9.11}{20}
+\bibstyle{IEEEtran}
+\@writefile{toc}{\contentsline {section}{References}{}}
