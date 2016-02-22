@@ -84,17 +84,17 @@ M.~B. Giles, G.~R. Mudalige, Z.~Sharif, G.~Markall, and P.~H. Kelly,
   ``Performance analysis and optimization of the op2 framework on many-core
   architectures,'' \emph{The Computer Journal}, p. bxr062, 2011.
 
-\bibitem{o3}
-C.~Bertolli, A.~Betts, G.~Mudalige, M.~Giles, and P.~Kelly, ``Design and
-  performance of the op2 library for unstructured mesh applications,'' in
-  \emph{Euro-Par 2011: Parallel Processing Workshops}.\hskip 1em plus 0.5em
-  minus 0.4em\relax Springer, 2011, pp. 191--200.
-
 \bibitem{o12}
 G.~R. Mudalige, M.~B. Giles, J.~Thiyagalingam, I.~Reguly, C.~Bertolli, P.~H.
   Kelly, and A.~E. Trefethen, ``Design and initial performance of a high-level
   unstructured mesh framework on heterogeneous parallel systems,''
   \emph{Parallel Computing}, vol.~39, no.~11, pp. 669--692, 2013.
+
+\bibitem{o3}
+C.~Bertolli, A.~Betts, G.~Mudalige, M.~Giles, and P.~Kelly, ``Design and
+  performance of the op2 library for unstructured mesh applications,'' in
+  \emph{Euro-Par 2011: Parallel Processing Workshops}.\hskip 1em plus 0.5em
+  minus 0.4em\relax Springer, 2011, pp. 191--200.
 
 \bibitem{o4}
 G.~Mudalige, M.~Giles, B.~Spencer, C.~Bertolli, and I.~Reguly, ``Designing op2
