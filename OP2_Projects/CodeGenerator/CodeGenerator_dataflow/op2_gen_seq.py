@@ -267,7 +267,6 @@ def op2_gen_seq(master, date, consts, kernels):
       else:
         code('op_arg ARG,')
 
-    code('std::vector<hpx::future<void>> new_data;')
     code('hpx::parallel::dynamic_chunk_size dcs(500);')
 
     code('int nargs = '+str(nargs)+';')
@@ -419,7 +418,6 @@ def op2_gen_seq(master, date, consts, kernels):
             code(line+' ARG.size * 2.0f;')
 
     depth -= 2
-    code('return new_data;')
     code('}),set,')
 
     for m in unique_args:

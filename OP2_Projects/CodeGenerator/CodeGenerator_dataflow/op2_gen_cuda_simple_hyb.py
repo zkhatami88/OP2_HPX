@@ -528,7 +528,6 @@ def op2_gen_cuda_simple_hyb(master, date, consts, kernels,sets):
       if maps[g_m]==OP_GBL:
         code('TYP*ARGh = (TYP *)ARG.data;')
 
-    code('std::vector<hpx::future<void>> new_data;')
     code('hpx::parallel::dynamic_chunk_size dcs(500);')
 
     code('int nargs = '+str(nargs)+';')
@@ -836,7 +835,6 @@ def op2_gen_cuda_simple_hyb(master, date, consts, kernels,sets):
             code(line+' ARG.size * 2.0f;')
 
     depth = depth - 2
-    code('return new_data;')
     code('}),set,')
 
     for m in unique_args:
