@@ -179,7 +179,29 @@ The remainder of this paper is structured as following: Section \ref{sec:op2} ex
 
 This paper presents an optimization study of the OP2 ``active" library \cite{o1}. OP2 utilizes the source-to-source translation which targets a single application code to be written for different backend hardware platforms \cite{o2,o3,o4}. OP2 generates a code for single-threaded on a CPUs, multi-threaded using OpenMP for single SMP node of multi-core CPUs, using CUDA for a single NVIDIA GPU, using MPI and OpenMP for a cluster of CPUs and using MPI and CUDA for a cluster of NVIDIA GPUs \cite{o4}. 
 
-OP2 API has been developed for an unstructured grids. So the algorithm includes four different parts: sets, data on sets, mapping connectivity between the sets and computation on the sets \cite{o2,o7}. Sets can be nodes, edges, faces or other elements. Data are values and parameters associated with these sets. Map is used to define a connectivity between sets. There is two different kinds of $loops$ defined in OP2: $indirect$~loop$ and $direct$~loop$. The operation over a set is done within a loop in an application code. Arguments passed to loops in OP2 have an explicit indication that how each of them are accessed within a loop : \texttt{OP\_READ} (read only), \texttt{OP\_WRITE} (write) or \texttt{OP\_INC} (increment - to avoid race conditions due to indirectly accessed) \cite{o1}. If data is accessed through a mapping, the loop is an $indirect$ loop. Otherwise, it is a $direct$ loop. 
+OP2 API has been developed for an unstructured grids. So the algorithm includes four different parts: sets, data on sets, mapping connectivity between the sets and computation on the sets \cite{o2,o7}. Sets can be nodes, edges, faces or other elements. Data are values and parameters associated with these sets. Map is used to define a connectivity between sets. The operation over a set is done with a user's defined kernel function within a loop. Arguments passed to loops in OP2 have an explicit indication that how each of them are accessed within a loop : \texttt{OP\_READ} (read only), \texttt{OP\_WRITE} (write) or \texttt{OP\_INC} (increment - to avoid race conditions due to indirectly accessed) \cite{o1}. There is two different kinds of $loops$ defined in OP2: $indirect$ loop and $direct$ loop. If data is accessed through a mapping, the loop is an $indirect$ loop. Otherwise, it is a $direct$ loop. 
+
+In this research Airfoil application is studied that is presented in \cite{o8}. Figure \ref{o1} shows \texttt{op\_par\_loop\_save\_soln} and \texttt{lop\_par\_loop\_adt\_calc} loops from an Airfoil application. \texttt{op\_par\_loop\_save\_soln} loop is a $direct$ loop which applies \texttt{save\_soln} over cells with accessing data arguments \texttt{p\_q} and \texttt{p\_qold} passed to the loop. \texttt{op\_par\_loop\_adt\_calc} is an $indirect$ loop which applies \texttt{op\_par\_loop\_adt\_calc} over cells with accessing data arguments \texttt{p\_x}, \texttt{p\_q} and \texttt{p\_adt} passed to the loop. 
+
+\begin{figure} [!h]
+    \begin{lstlisting}
+op_par_loop_save_soln("save_soln", cells,
+  op_arg_dat(p_q,-1,OP_ID,OP_READ),
+  op_arg_dat(p_qold,-1,OP_ID,OP_WRITE));
+  
+op_par_loop_adt_calc("adt_calc",cells,
+  op_arg_dat(p_x,-1,OP_ID,OP_READ),
+  op_arg_dat(p_x,-1,OP_ID,OP_READ),
+  op_arg_dat(p_x,-1,OP_ID,OP_READ),
+  op_arg_dat(p_x,-1,OP_ID,OP_READ),
+  op_arg_dat(p_q,-1,OP_ID,OP_READ),
+  op_arg_dat(p_adt,-1,OP_ID,OP_WRITE));
+  
+    \end{lstlisting}
+    \caption{\small{\texttt{op\_par\_loop\_save\_soln} and \texttt{lop\_par\_loop\_adt\_calc} loops from an Airfoil application.  \texttt{op\_par\_loop\_save\_soln} loop is a $direct$ loop and \texttt{op\_par\_loop\_adt\_calc} is an $indirect$ loop.}}
+    \label{o1}
+\end{figure}
+
 
 
 OP2's design is based on achieving a near-optimal performance for scaling on multi-core processors. In \cite{o3,o4}, it is studied that OP2 API is able to produce a near-optimal performance in a parallel loops for different frameworks without the intervention of the application programmer. However, processors starvation, latencies and overhead communications in parallelization using conventional techniques usually inhibits a desired scalability. Most of the parallelization methods are based on the fork-join model. In the fork-join model, the computational process will be stopped if the results from the previous step are not completed yet. As a result, there is always a global barrier after each step. 
@@ -187,9 +209,7 @@ OP2's design is based on achieving a near-optimal performance for scaling on mul
 \texttt{\#pragma omp parallel for} is used in a code generated with OP2 for a single-threaded and also for a multi-threaded machine. There is an implicit global barrier using \texttt{\#pragma omp parallel for}, which avoids extracting an optimal parallelism from a parallel application. In this research, HPX is used for loop parallelization for a single-threaded and a multi-threaded machine instead of using OpenMP.  HPX allows automatically creating an execution tree of an application which represents a dependency graph. This enables HPX to have an asynchronous task execution. The performance of HPX is explained in more details in section \ref{sec:hpx}.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
 
 
-In this research Airfoil application is studied that is presented in \cite{o8}. This application includes both $direct$ and $indirect$ loops that all of them are parallelized with OpenMP. Optimization of Airfoil application with HPX for parallelizing loops used in a code generated with OP2 is discussed in more details in section \ref{sec:air}.                                                                                                                                                                                                                                      
-
-The source-to-source code translator for OP2 is written in Matlab and Python \cite{o3}. Python source-to-source code translator is used in this research and some part of it is modified to automatically generate the parallel loops with HPX instead of OpenMP within an application problem. 
+An Airfoil application includes both $direct$ and $indirect$ loops that all of them are parallelized with OpenMP. Optimization of Airfoil application with HPX for parallelizing loops used in a code generated with OP2 is discussed in more details in section \ref{sec:air}. The source-to-source code translator for OP2 is written in Matlab and Python \cite{o3}. Python source-to-source code translator is used in this research and some part of it is modified to automatically generate the parallel loops with HPX instead of OpenMP within an application problem. 
 
 
 \section{HPX}
@@ -221,23 +241,23 @@ Figure~\ref{f4} shows that until returning the computed value, the other threads
 \section{Airfoil code with HPX}
 \label{sec:air}
 
-For our evaluation we chose the Airfoil application presented in \cite{o8}. This model uses an unstructured grid and it consists of five parallel loops: \texttt{save\_soln}, \texttt{adt\_calc}, \texttt{res\_calc}, \texttt{bres\_calc}, \texttt{update}, which \texttt{save\_soln},  and \texttt{update} loops are $direct$ loops and the others are $indirect$ loops. Figure \ref{l1} shows the sequential loops used in Airfoil application within \texttt{airfoil.cpp}. Saving old data values, applying the computation on each data value and updating them are implemented with mentioned five loops. Each loop iterates over a specified set and the operations that is performed with a user's kernels are defined in a header file for each loop: \texttt{save\_soln.h}, \texttt{adt\_calc.h}, \texttt{res\_calc.h}, \texttt{bres\_calc.h} and \texttt{update.h}.  OP2 API provides a parallel loop function allowing the computation over sets through \texttt{op\_par\_loop} for each loops in Figure \ref{l1}. 
+For our evaluation we chose the Airfoil application presented in \cite{o8}. This model uses an unstructured grid and it consists of five parallel loops: \texttt{op\_par\_loop\_save\_soln}, \texttt{op\_par\_loop\_adt\_calc}, \texttt{op\_par\_loop\_res\_calc}, \texttt{op\_par\_loop\_bres\_calc}, \texttt{op\_par\_loop\_update}, which \texttt{op\_par\_loop\_save\_soln},  and \texttt{op\_par\_loop\_update} loops are $direct$ loops and the others are $indirect$ loops. Figure \ref{l1} shows the sequential loops used in Airfoil application within \texttt{airfoil.cpp}. Saving old data values, applying the computation on each data value and updating them are implemented with mentioned five loops. Each loop iterates over a specified set and the operations that is performed with a user's kernels are defined in a header file for each loop: \texttt{save\_soln.h}, \texttt{adt\_calc.h}, \texttt{res\_calc.h}, \texttt{bres\_calc.h} and \texttt{update.h}.  OP2 API provides a parallel loop function allowing the computation over sets through \texttt{op\_par\_loop} for each loops in Figure \ref{l1}. 
 
 \begin{figure} [!h]
     \begin{lstlisting}
-op_par_loop(save_soln,"save_soln", cells,
+op_par_loop_save_soln("save_soln", cells,
   op_arg_dat_0,...,op_arg_dat_n1);
   
-op_par_loop(adt_calc,"adt_calc",cells,
+op_par_loop_adt_calc("adt_calc",cells,
   op_arg_dat_0,...,op_arg_dat_n2);
   
-op_par_loop(res_calc,"res_calc",edges,
+op_par_loop_res_calc("res_calc",edges,
   op_arg_dat_0,...,op_arg_dat_n3);
 
-op_par_loop(bres_calc,"bres_calc",bedges,
+op_par_loop_bres_calc("bres_calc",bedges,
   op_arg_dat_0,...,op_arg_dat_n4);
   
-op_par_loop(update,"update",cells,
+op_par_loop_update("update",cells,
   op_arg_dat_0,...,op_arg_dat_n5);
   
     \end{lstlisting}
@@ -246,7 +266,7 @@ op_par_loop(update,"update",cells,
 \end{figure}
 
 
-Figure \ref{l2} shows the loop of \texttt{adt\_calc} function from Figure \ref{l1} parsed with \texttt{op\_par\_loop}, which illustrates how each cell updates its data value with using the data values passed to \texttt{adt\_calc}: \texttt{blockId}, \texttt{offset\_b} and \texttt{nelem}. The value of \texttt{blockId} is defined based on the value of \texttt{blockIdx} captured from OP2 API.  \texttt{offset\_b} and \texttt{nelem} are defined based on the value of \texttt{blockId}. The arguments are passed to the \texttt{adt\_calc} user kernel subroutine, which does the computation for each iteration in the inner loop from \texttt{offset\_b} to \texttt{offset\_b+nelem} of each iteration of the outer loop from \texttt{0} to \texttt{nblocks}. More details about the Airfoil application and its computation process can be found in \cite{o8}.
+Figure \ref{l2} shows the loop of \texttt{op\_par\_loop\_adt\_calc} function from Figure \ref{l1} parsed with OP2, which illustrates how each cell updates its data value with using the data values passed to \texttt{op\_par\_loop\_adt\_calc}: \texttt{blockId}, \texttt{offset\_b} and \texttt{nelem}. The value of \texttt{blockId} is defined based on the value of \texttt{blockIdx} captured from OP2 API.  \texttt{offset\_b} and \texttt{nelem} are defined based on the value of \texttt{blockId}. The arguments are passed to the \texttt{adt\_calc} user kernel subroutine, which does the computation for each iteration in the inner loop from \texttt{offset\_b} to \texttt{offset\_b+nelem} of each iteration of the outer loop from \texttt{0} to \texttt{nblocks}. More details about the Airfoil application and its computation process can be found in \cite{o8}.
 
 \begin{figure} [!h]
     \begin{lstlisting}
@@ -273,14 +293,14 @@ for(int blockIdx=0; blockIdx<nblocks; blockIdx++){
 
 As shown in Figure \ref{l2}, \texttt{\#pragma omp parallel for} is used for each loops passed with \texttt{op\_par\_loop} in OP2 for loop parallelization, on one node and also on distributed nodes. However, scalability is limited due to the sequential time  caused by the implicit barrier in the fork-join model \cite{r23} between the parallel loops as described by Amdahl's Law. HPX parallelization methods are used here instead of OpenMP to achieve an optimal parallelization for parallelizing the loops parsed with OP2. 
 
-In this research we use two HPX methods for loop parallelization: I) using \texttt{hpx::parallel::for\_each} with \texttt{hpx::parallel::par} as an execution policy and II) using \texttt{hpx::lcos::local::dataflow} with \texttt{hpx::parallel::for\_each}. First method is described in more details in section \ref{sec:for} and second method is explained in section \ref{sec:async}. The comparison results of these two methods and OpenMP can be found in section \ref{sec:res}.
+In this research we use two HPX methods for loop parallelization: A) using \texttt{hpx::parallel::for\_each} with \texttt{hpx::parallel::par} as an execution policy, B) using \texttt{hpx::async} and \texttt{hpx::parallel::for\_each} with using both \texttt{hpx::parallel::par} and \texttt{hpx::parallel::par(task)} as the execution policies and C) using \texttt{hpx::lcos::local::dataflow} with modifying OP2 API. First two methods are used without changing OP2 API and the third method is implemented with modifying some part of OP2 API to make all $direct$ and $indirect$ loops interleaved with each other. First method is described in more details in section \ref{sec:for}, second method is explained in section \ref{sec:async} and third method is studied in section \ref{sec:data}. The comparison results of these two methods and OpenMP can be found in section \ref{sec:res}.
 
-\subsection{\texttt{hpx::parallel::for\_each} }
+\subsection{\texttt{parallel::for\_each} with \texttt{par}}
 \label{sec:for}
 
 In this method, for the loops exist within Airfoil kernel functions, we implement one of the execution policies from HPX to make the loops to execute in parallel. The list of the execution policies can be found in \cite{hpx_v0.9.11}. 
 
-\texttt{hpx::parallel::par} as an execution policy is used while implementing \texttt{hpx::parallel::for\_each}. We were able to modify OP2 source-to-source translator with Python to automatically produce \texttt{hpx::parallel::for\_each} instead of using \texttt{\#pragma omp parallel for} for a loop parallelization. Figure \ref{l3} shows the loop of \texttt{adt\_calc} function parsed with \texttt{op\_par\_loop}. In this method \texttt{airfoil.cpp} remains the same as Figure \ref{l1}.
+\texttt{hpx::parallel::par} as an execution policy is used while implementing \texttt{hpx::parallel::for\_each}. We were able to modify OP2 source-to-source translator with Python to automatically produce \texttt{hpx::parallel::for\_each} instead of using \texttt{\#pragma omp parallel for} for a loop parallelization. Figure \ref{l3} shows the loop of \texttt{op\_par\_loop\_adt\_calc} function parsed with \texttt{op\_par\_loop}. In this method \texttt{airfoil.cpp} remains the same as Figure \ref{l1} and also OP2 API is not changed too.
 
 \begin{figure} 
     \begin{lstlisting}    
@@ -334,23 +354,105 @@ hpx::parallel::for_each(hpx::parallel::par.with(dcs), r.begin(), r.end(),[&](std
 
 This example exposes the same disadvantage as OpenMP, which is the representation of fork-join parallelism that introduces the global barriers at the end of the loop. But the difference of this method with OpenMP is that with using \texttt{hpx::parallel::for\_each}, HPX is able to automatically control a grain size during a runtime. Grain size is the amount of works per threads. As discussed in section \ref{sec:hpx}, HPX enables fine-grained task parallelism and determines the grain size as small as possible to give task to all available threads. Grain size, which is named as \texttt{chunk\_size} within HPX, is determined from auto-partitioner algorithm in HPX estimated at runtime while sequentially executing $1\%$ of an application. So \texttt{hpx::parallel::for\_each} helps creating sufficient amount of parallelism that how many iterations will run on the same thread, which helps in reducing processor starvation caused by the fork-join barrier at the end of the execution of the parallel loop. 
 
-However, it should be considered that if the computational time of a loop is not large enough compared to an application execution time, using an auto-partitioner algorithm within HPX will not be efficient. Since for the small loops, $1\%$ of an application execution time used for determining a grain size will affect the application's scalability, so HPX provides another way to avoid degrading the scalability while using \texttt{hpx::parallel::for\_each}. Grain size can be determined as a static grain size with \texttt{hpx::parallel::for\_each(par.with(dcs))} before executing a loop, which dcs is defined with \texttt{hpx::parallel::dynamic\_chunk\_size dcs(SIZE)} as a static size.  Figure \ref{l3b} shows the part of code related to \texttt{adt\_calc} function parsed with \texttt{op\_par\_loop} with determining a static grain size for a loop with \texttt{hpx::parallel::dynamic\_chunk\_size dcs(SIZE)}. 
+However, it should be considered that if the computational time of a loop is not large enough compared to an application execution time, using an auto-partitioner algorithm within HPX will not be efficient. Since for the small loops, $1\%$ of an application execution time used for determining a grain size will affect the application's scalability, so HPX provides another way to avoid degrading the scalability while using \texttt{hpx::parallel::for\_each}. Grain size can be determined as a static grain size with \texttt{hpx::parallel::for\_each(par.with(dcs))} before executing a loop, which dcs is defined with \texttt{hpx::parallel::dynamic\_chunk\_size dcs(SIZE)} as a static size.  Figure \ref{l3b} shows the part of code related to \texttt{op\_par\_loop\_adt\_calc} function parsed with \texttt{op\_par\_loop} with determining a static grain size for a loop with \texttt{hpx::parallel::dynamic\_chunk\_size dcs(SIZE)}. 
 
 
 The experimental result for an Airfoil application is discussed in section \ref{sec:res} for both dynamic and static \texttt{chunk\_size}.
 
-
-
-
-
-
-
-
-\subsection{\texttt{hpx::lcos::local::dataflow} with \texttt{hpx::parallel::for\_each}}
+\subsection{\texttt{async} and \texttt{parallel::for\_each}}
 \label{sec:async}
-%The most compute intensive loop res_calc has about 100 floating-point operations performed per mesh edge and is called 2000 times during total execution of the application.
 
-Here, we implement \texttt{hpx::lcos::local::dataflow} with \texttt{hpx::parallel::for\_each} for loop parallelization that makes the invocation of the loop asynchronous. Asynchronous task execution means that a new HPX-thread will be scheduled. The call to \texttt{hpx::lcos::local::dataflow} provides a new $future$ instance which represents the result of the function execution.  
+Here, we implement two different parallelization methods for the loops based on their types. For the $direct$ loops, \texttt{hpx::async} and \texttt{hpx::parallel::for\_each} with \texttt{hpx::parallel::par} as an execution policy is used. For  the $indirect$ loops,  \texttt{hpx::parallel::for\_each} with \texttt{hpx::parallel::par(task)} as an execution policy is implemented. The call to \texttt{hpx::async} and also \texttt{hpx::parallel::par(task)} provide a new $future$ instance, which represents the result of the function execution that make the invocation of the loop asynchronous. Asynchronous task execution means that a new HPX-thread will be scheduled. 
+
+In Figure \ref{l6}, \texttt{hpx::async} and \texttt{hpx::parallel::for\_each} with \texttt{hpx::parallel::par} is used for \texttt{op\_par\_loop\_save\_soln}, which is a $direct$ loop and returns a $future$ representing the result of a function. In Figure \ref{l6b},  \texttt{hpx::parallel::for\_each} with \texttt{hpx::parallel::par(task)} is used for \texttt{op\_par\_loop\_adt\_calc}, which is an $indirect$ loop and it also returns a $future$ representing the result of a function. The $future$ returned from all $direct$ and $indirect$ loops allow the asynchronization for the executed loops.
+
+\begin{figure} [!h]
+    \begin{lstlisting}    
+
+return async(hpx::launch::async,[adt_calc,set,arg0,...,argn1](){
+
+    hpx::parallel::dynamic_chunk_size dcs(SIZE);
+    auto r=boost::irange(0, nthreads);
+    hpx::parallel::for_each(hpx::parallel::par.with(dcs), r.begin(), r.end(),[&](std::size_t thr){
+  
+    int start  = //defined based on number of threads;
+    int finish =//defined based on number of threads;
+        
+    for ( int n=start; n<finish; n++ ){
+     save_soln(...);
+    }
+  });
+  
+    \end{lstlisting}
+    \caption{\small{Implementing \texttt{hpx::async} and \texttt{hpx::parallel::for\_each} with \texttt{hpx::parallel::par} for a $direct$ loop parallelization in OP2 for Airfoil application.}}
+    \label{l6}
+\end{figure}
+
+
+\begin{figure} 
+    \begin{lstlisting}    
+hpx::parallel::dynamic_chunk_size dcs(SIZE);
+auto r=boost::irange(0, nblocks);
+hpx::future<void> new_data;
+new_data=hpx::parallel::for_each(hpx::parallel::par(hpx::parallel::task).with(dcs), r.begin(), r.end(),[&](std::size_t blockIdx){
+  
+  int blockId  = //defined with blockIdx in OP2 API
+  int nelem    = //defined based on blockId 
+  int offset_b = //defined based on blockId
+        
+  for ( int n=offset_b; n<offset_b+nelem; n++ ){
+   .
+   .
+   .
+
+   adt_calc(...);
+  }
+});
+  
+    \end{lstlisting}
+    \caption{\small{Implementing \texttt{hpx::parallel::for\_each} with \texttt{hpx::parallel::par(task)} for an $indirect$ loop parallelization in OP2 for Airfoil application. The returned $future$ representing the result of a function}}
+    \label{l6b}
+\end{figure}
+
+In this method OP2 API is not changed but \texttt{airfoil.cpp} is changed as shown Figure \ref{l4}. Each kernel function within \texttt{op\_par\_loop} returns a $future$ stored in a \texttt{new\_data}. Each future depends on a future in a previous step. OP2 source-to-source translator with Python is modified and it automatically produces \texttt{hpx::async} and \texttt{hpx::parallel::for\_each} with \texttt{hpx::parallel::par} for each direct loops and \texttt{hpx::parallel::for\_each} with \texttt{hpx::parallel::par(task)} for each $indirect$ loops within Airfoil application. The experimental results of this section can be found in Section \ref{sec:res}.
+
+\begin{figure}
+    \begin{lstlisting}   
+
+new_data1=op_par_loop_save_soln("save_soln",
+   cells,op_arg_dat_0,...,op_arg_dat_n1);
+  
+new_data2=op_par_loop_adt_calc_("adt_calc",
+   cells,op_arg_dat_0,...,op_arg_dat_n2);
+   
+new_data3=op_par_loop_res_calc("res_calc",
+   edges,op_arg_dat_0,...,op_arg_dat_n3);
+ 
+new_data4=op_par_loop_bres_calc("bres_calc",
+   bedges,op_arg_dat_0,...,op_arg_dat_n4);
+   
+new_data2.get();  
+ 
+new_data5=op_par_loop_update("update",
+   cells,op_arg_dat_0,...,op_arg_dat_n5);
+
+new_data3.get();
+new_data4.get();
+new_data5.get();
+new_data1.get();
+    
+    \end{lstlisting}
+    \caption{\small{\texttt{airfoil.cpp} is changed for using \texttt{hpx::async} for loop parallelization in OP2. \texttt{new\_data} is returned from each kernel function after calling \texttt{op\_par\_loop} and \texttt{hpx::wait\_all} is used after each loop till completing the results related to the previous loops.}}
+    \label{l4}
+\end{figure}
+
+
+
+\subsection{Interleaving $direct$ and $indirect$ with \texttt{hpx::lcos::local::dataflow}}
+\label{sec:data}
+
+Here, we implement \texttt{hpx::lcos::local::dataflow} with \texttt{hpx::parallel::for\_each} for loop parallelization that makes the invocation of the loop asynchronous. 
+%Asynchronous task execution means that a new HPX-thread will be scheduled. The call to \texttt{hpx::lcos::local::dataflow} provides a new $future$ instance which represents the result of the function execution.  
 
 In Figure \ref{l3b}, \texttt{hpx::lcos::local::dataflow} is used which returns a $future$ representing the result of a function and allows the asynchronization for the executed loops. Also, \texttt{hpx::parallel::for\_each} as a previous method (see section \ref{sec:air}) is used for a loop parallelization within each kernels. The only difference is that here all arguments passed to each kernel functions are $future$ except the name of a function. In using \texttt{hpx::lcos::local::dataflow}, if an argument is a future, then the invocation of a function will be delayed. Non-future arguments are passed through. For an instance, in Figure \ref{l3b}, \texttt{set,arg0,...,argn2} are expressed at the last line of the code, which invokes a function only once all of these futures get ready. \texttt{unwrapped} in Figure \ref{l3b} is a helper function created in HPX, which  unwraps the futures for a function and  passes along the actual results. 
 
@@ -358,7 +460,7 @@ In Figure \ref{l3b}, \texttt{hpx::lcos::local::dataflow} is used which returns a
  
 \begin{comment}
  
-\begin{figure} [!h]
+\begin{figure} 
     \begin{subfigure}[b]{0.5\textwidth}
     \begin{lstlisting}
 void work(int offset_b, int nelem,
@@ -400,7 +502,7 @@ for(int blockIdx=0; blockIdx<nblocks; blockIdx++){
 \end{comment}
 
 
-\begin{figure} [!h]
+\begin{figure}
     \begin{lstlisting}    
 using hpx::lcos::local::dataflow;
 using hpx::util::unwrapped;    
@@ -431,55 +533,12 @@ return dataflow(unwrapped([&adt_calc](op_set set, op_arg arg0, ... , op_arg argn
 
 
 
-In this method \texttt{airfoil.cpp} is changed as shown Figure \ref{l4}. Each kernel function within \texttt{op\_par\_loop} returns a $future$ stored in a \texttt{new\_data}. Each future depends on a future in a previous step. The $future$s returned represent the results as a dependency tree, which represents the execution graph that is automatically created by using \texttt{hpx::lcos::local::dataflow}. \texttt{hpx::lcos::local::dataflow} gives an ability of having an asynchronous task execution. 
+%In this method \texttt{airfoil.cpp} is changed as shown Figure \ref{l4}. Each kernel function within \texttt{op\_par\_loop} returns a $future$ stored in a \texttt{new\_data}. Each future depends on a future in a previous step. 
+%The $future$s returned represent the results as a dependency tree, which represents the execution graph that is automatically created by using \texttt{hpx::lcos::local::dataflow}. \texttt{hpx::lcos::local::dataflow} gives an ability of having an asynchronous task execution. 
 
 Moreover, \texttt{hpx::lcos::local::dataflow} provides a way of interleaving execution of $indirect$ loops. Interleaving execution of $direct$ loops can be done during a compile-time, however it is almost difficult to interleave $indirect$ loops during a compile-time. Using $future$ based techniques in HPX such as \texttt{hpx::lcos::local::dataflow} enables having an $indirect$ loop interleaving during a run-time.  
 
 In  Figure \ref{l4}, all of the arguments except the name of kernel function are passed as a future within each \texttt{op\_par\_loop}. \texttt{hpx::make\_ready\_future} is used to change them to a $future$ one. Then, \texttt{hpx::when\_all(new\_data).get()} is used which waits for a \texttt{new\_data} computation to be completed. It should be noted that the function represented in this section is the same as a function in section \ref{sec:for} but asynchronous. The caller \texttt{hpx::when\_all} for the function provides the result of the function execution. So, synchronously task execution suspends the current thread executing the process and the thread will be rescheduled once the function is completely executed. 
-
-
-
-\begin{figure}
-    \begin{lstlisting}   
-std::vector<hpx::future<void>> new_data1;
-
-new_data1.push_back(
-op_par_loop(save_soln,"save_soln", 
-        hpx::make_ready_future{cells},
-        hpx::make_ready_future{op_arg_dat_0},...,
-        hpx::make_ready_future{op_arg_dat_n1});
-  
-new_data1.push_back(
-op_par_loop(adt_calc,"adt_calc",
-        hpx::make_ready_future{cells},
-        hpx::make_ready_future{op_arg_dat_0},...,
-        hpx::make_ready_future{op_arg_dat_n2});
-   
-new_data1.push_back(
-op_par_loop(res_calc,"res_calc",
-        hpx::make_ready_future{edges},
-        hpx::make_ready_future{op_arg_dat_0},...,
-        hpx::make_ready_future{op_arg_dat_n3});
- 
-new_data1.push_back(
-op_par_loop(bres_calc,"bres_calc",
-       hpx::make_ready_future{bedges},
-       hpx::make_ready_future{op_arg_dat_0},...,
-       hpx::make_ready_future{op_arg_dat_n4});
-   
-new_data1.push_back(
-op_par_loop(update,"update",
-       hpx::make_ready_future{cells},
-       hpx::make_ready_future{op_arg_dat_0},...,
-       hpx::make_ready_future{op_arg_dat_n5});
-  
-hpx::when_all(new_data1).get();
-   
-    \end{lstlisting}
-    \caption{\small{\texttt{airfoil.cpp} is changed for using \texttt{hpx::async} for loop parallelization in OP2. \texttt{new\_data} is returned from each kernel function after calling \texttt{op\_par\_loop} and \texttt{hpx::wait\_all} is used after each loop till completing the results related to the previous loops.}}
-    \label{l4}
-\end{figure}
-
 
 
 The goal of using $future$ is to let the computation within a loop as far as possible and avoid a global barrier synchronization forced with using  \texttt{hpx::parallel::for\_each} and \texttt{\#pragma omp parallel for}. As a result, using $futures$ allows the continuation of the current computations without waiting for the computations of the previous step, if their results are not needed in the current step. Removing the global barrier synchronizations improves the parallelization performance. 
@@ -491,7 +550,7 @@ OP2 source-to-source translator with Python is modified here and \texttt{hpx::lc
 
 \section{Experimental Results}
 \label{sec:res}
-%Moreover, if the function \texttt{adt\_calc} schedules more parallel work, the computation time will be more than the communication overhead, which helps to obtain higher parallelism level.
+%Moreover, if the function \texttt{op\_par\_loop\_adt\_calc} schedules more parallel work, the computation time will be more than the communication overhead, which helps to obtain higher parallelism level.
 
 
 
@@ -524,7 +583,7 @@ with up to 64 threads. HPX allows controlling a grain size while using \texttt{h
 
 
 
-Figure \ref{f2b} shows an execution time for \texttt{\#pragma omp parallel for} and \texttt{hpx::lcos::local::dataflow} and Figure \ref{f2} shows the strong scaling comparison results for these methods. \texttt{hpx::parallel::for\_each} is used for the loop parallelization \texttt{hpx::lcos::local::dataflow} as discussed in Section \ref{sec:async}. Figure \ref{f2} illustrates a better performance for \texttt{hpx::lcos::local::dataflow} which is due to the asynchronous task execution. \texttt{hpx::lcos::local::dataflow} automatically generated an execution tree, which represents a dependency graph and allows to execute a function asynchronously. Asynchronous task execution removes a global barrier synchronization after each loop and as a results improves a scalability for a parallel applications.    
+Figure \ref{f2b} shows an execution time for \texttt{\#pragma omp parallel for} and \texttt{hpx::lcos::local::dataflow} and Figure \ref{f2} shows the strong scaling comparison results for these methods. \texttt{hpx::parallel::for\_each} is used for the loop parallelization \texttt{hpx::lcos::local::dataflow} as discussed in Section \ref{sec:data}. Figure \ref{f2} illustrates a better performance for \texttt{hpx::lcos::local::dataflow} which is due to the asynchronous task execution. \texttt{hpx::lcos::local::dataflow} automatically generated an execution tree, which represents a dependency graph and allows to execute a function asynchronously. Asynchronous task execution removes a global barrier synchronization after each loop and as a results improves a scalability for a parallel applications.    
 
 \begin{figure} [!h]
 \begin{center}
