@@ -192,16 +192,16 @@ In this research Airfoil application is studied that is presented in \cite{o8}. 
 \begin{figure} 
     \begin{lstlisting}
 op_par_loop_save_soln("save_soln", cells,
-  op_arg_dat(p_q,-1,OP_ID,OP_READ),
-  op_arg_dat(p_qold,-1,OP_ID,OP_WRITE));
+  op_arg_dat(p_q,-1,OP_ID,4,"double",OP_READ),
+  op_arg_dat(p_qold,-1,OP_ID,4,"double",OP_WRITE));
   
 op_par_loop_adt_calc("adt_calc",cells,
-  op_arg_dat(p_x,-1,OP_ID,OP_READ),
-  op_arg_dat(p_x,-1,OP_ID,OP_READ),
-  op_arg_dat(p_x,-1,OP_ID,OP_READ),
-  op_arg_dat(p_x,-1,OP_ID,OP_READ),
-  op_arg_dat(p_q,-1,OP_ID,OP_READ),
-  op_arg_dat(p_adt,-1,OP_ID,OP_WRITE));
+  op_arg_dat(p_x,0,OP_ID,2,"double",OP_READ),
+  op_arg_dat(p_x,1,OP_ID,2,"double",OP_READ),
+  op_arg_dat(p_x,2,OP_ID,2,"double",OP_READ),
+  op_arg_dat(p_x,3,OP_ID,2,"double",OP_READ),
+  op_arg_dat(p_q,-1,OP_ID,4,"double",OP_READ),
+  op_arg_dat(p_adt,-1,OP_ID,1,"double",OP_WRITE));
   
     \end{lstlisting}
     \caption{\small{\texttt{op\_par\_loop\_save\_soln} and \texttt{op\_par\_loop\_adt\_calc} loops from an Airfoil application.  \texttt{op\_par\_loop\_save\_soln} loop is a $direct$ loop and \texttt{op\_par\_loop\_adt\_calc} is an $indirect$ loop.}}
