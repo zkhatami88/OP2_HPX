@@ -25,8 +25,6 @@
 \citation{o3,o4}
 \citation{o3}
 \citation{r6}
-\citation{r15}
-\citation{r19}
 \@writefile{toc}{\contentsline {section}{\numberline {II}OP2}{}}
 \newlabel{sec:op2}{{II}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {\texttt  {op\_par\_loop\_save\_soln} and \texttt  {op\_par\_loop\_adt\_calc} loops from an Airfoil application. \texttt  {op\_par\_loop\_save\_soln} loop is a $direct$ loop and \texttt  {op\_par\_loop\_adt\_calc} is an $indirect$ loop.}\relax }}{}}
@@ -34,6 +32,8 @@
 \newlabel{o1}{{1}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {III}HPX}{}}
 \newlabel{sec:hpx}{{III}{}}
+\citation{r15}
+\citation{r19}
 \citation{r20}
 \citation{o8}
 \citation{o8}
@@ -55,29 +55,35 @@
 \newlabel{l3}{{5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Implementing \texttt  {hpx::parallel::for\_each} for loop parallelization in OP2 for Airfoil application. HPX is able to avoid degrading the scalability for small loops with defining a static grain size with \texttt  {hpx::parallel::dynamic\_chunk\_size dcs(SIZE)} before the parallel loop execution.}\relax }}{}}
 \newlabel{l3b}{{6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Implementing \texttt  {hpx::async} and \texttt  {hpx::parallel::for\_each} with \texttt  {hpx::parallel::par} for a $direct$ loop parallelization in OP2 for Airfoil application. The returned $future$ representing the result of a function.}\relax }}{}}
-\newlabel{l6}{{7}{}}
 \newlabel{sec:async}{{\unhbox \voidb@x \hbox {IV-A}2}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {IV-A}2}\textbf  {\texttt  {async} and \texttt  {parallel::for\_each}}}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Implementing \texttt  {hpx::async} and \texttt  {hpx::parallel::for\_each} with \texttt  {hpx::parallel::par} for a $direct$ loop parallelization in OP2 for Airfoil application. The returned $future$ representing the result of a function.}\relax }}{}}
+\newlabel{l6}{{7}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Implementing \texttt  {hpx::parallel::for\_each} with \texttt  {hpx::parallel::par(task)} for an $indirect$ loop parallelization in OP2 for Airfoil application. The returned $future$ representing the result of a function.}\relax }}{}}
 \newlabel{l6b}{{8}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {\texttt  {airfoil.cpp} is changed while using \texttt  {hpx::async} and \texttt  {hpx::parallel::par(task)} for loop parallelization in OP2. \texttt  {new\_data} is returned from each kernel function after calling \texttt  {op\_par\_loop} and \texttt  {new\_data.get()} is used to get $futures$ ready before the next steps.}\relax }}{}}
-\newlabel{l4}{{9}{}}
-\citation{hpx_v0.9.11}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-B}}\textbf  {HPX with the modified OP2 API}}{}}
 \newlabel{sec:with}{{\unhbox \voidb@x \hbox {IV-B}}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Implementing \texttt  {hpx::parallel::for\_each} within \texttt  {hpx::lcos::local::dataflow} for loop parallelization in OP2 for Airfoil application. It makes the invocation of the loop asynchronous and return $future$, which is is stored in \texttt  {new\_data}. \texttt  {hpx::lcos::local::dataflow} allows automatically creating the execution graph which represents a dependency tree.}\relax }}{}}
-\newlabel{l3b}{{10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {\texttt  {airfoil.cpp} is changed while using \texttt  {hpx::async} and \texttt  {hpx::parallel::par(task)} for loop parallelization in OP2. \texttt  {new\_data} is returned from each kernel function after calling \texttt  {op\_par\_loop} and \texttt  {new\_data.get()} is used to get $futures$ ready before the next steps.}\relax }}{}}
+\newlabel{l4}{{9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {\texttt  {op\_arg\_dat} is modified to create an argument as a $future$, which is passed to a function through \texttt  {op\_par\_loop}.}\relax }}{}}
+\newlabel{o2}{{10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Implementing \texttt  {hpx::parallel::for\_each} within \texttt  {hpx::lcos::local::dataflow} for loop parallelization in OP2 for Airfoil application. It makes the invocation of the loop asynchronous and return $future$, which is is stored in \texttt  {new\_data}. \texttt  {hpx::lcos::local::dataflow} allows automatically creating the execution graph which represents a dependency tree.}\relax }}{}}
+\newlabel{l3b}{{11}{}}
+\citation{hpx_v0.9.11}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {\texttt  {airfoil.cpp} is changed while using \texttt  {hpx::lcos::local::dataflow} for loop parallelization in OP2. \texttt  {data[t]} is returned from each kernel function after calling \texttt  {op\_par\_loop} using \texttt  {data[t-1]}.}\relax }}{}}
+\newlabel{l3c}{{12}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {V}Experimental Results}{}}
 \newlabel{sec:res}{{V}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Execution time of an Airfoil application with \texttt  {\#pragma omp parallel for} and \texttt  {hpx::parallel::for\_each} (dynamic and static \texttt  {chunk\_size}) used for an Airfoil application with up to 64 threads.}\relax }}{}}
-\newlabel{f1b}{{11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Comparison results of strong scaling between \texttt  {\#pragma omp parallel for} and \texttt  {hpx::parallel::for\_each} with dynamic and static \texttt  {chunk\_size} used for an Airfoil application with up to 64 threads. HPX allows controlling a grain size while using \texttt  {hpx::parallel::for\_each} to improve scalability. The results illustrate a better performance for \texttt  {hpx::parallel::for\_each} with the static \texttt  {chunk\_size} compared to the dynamic \texttt  {chunk\_size} for small loops. However, OpenMP performs better than HPX in this example.}\relax }}{}}
+\newlabel{f1}{{13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Comparison results of strong scaling between \texttt  {\#pragma omp parallel for} and \texttt  {hpx::async} used for Airfoil application with up to 64 threads. The results illustrate a better performance for \texttt  {hpx::async} for the larger number of threads, which is due to the asynchronous task execution provided with a returned $future$. }\relax }}{}}
+\newlabel{f3}{{14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Comparison results of strong scaling between \texttt  {hpx::lcos::local::dataflow} and \texttt  {\#pragma omp parallel for} used for Airfoil application with up to 64 threads. The results illustrate a better performance for \texttt  {hpx::lcos::local::dataflow} for the larger number of threads, which is due to the asynchronous task execution. \texttt  {hpx::lcos::local::dataflow} automatically generated an execution tree, which represents a dependency graph and allows to execute a function asynchronously. }\relax }}{}}
+\newlabel{f2}{{15}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Comparison results of a weak scaling between \texttt  {\#pragma omp parallel for}, \texttt  {hpx::parallel::for\_each}, \texttt  {hpx::async} and \texttt  {hpx::lcos::local::dataflow} used for Airfoil application with up to 64 threads. The results illustrate a better performance for \texttt  {hpx::lcos::local::dataflow} for the larger number of threads, which shows the perfect overlap of computation with communication enabled by HPX.}\relax }}{}}
+\newlabel{f2}{{16}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Conclusion}{}}
 \newlabel{sec:future}{{VI}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Comparison results of strong scaling between \texttt  {\#pragma omp parallel for} and \texttt  {hpx::parallel::for\_each} with dynamic and static \texttt  {chunk\_size} used for an Airfoil application with up to 64 threads. HPX allows controlling a grain size while using \texttt  {hpx::parallel::for\_each} to improve scalability. The results illustrate a better performance for \texttt  {hpx::parallel::for\_each} with the static \texttt  {chunk\_size} compared to the dynamic \texttt  {chunk\_size} for small loops. However, OpenMP performs better than HPX in this example.}\relax }}{}}
-\newlabel{f1}{{12}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Execution time of an Airfoil application with \texttt  {\#pragma omp parallel for} and \texttt  {hpx::lcos::local::dataflow} with \texttt  {hpx::parallel::for\_each} used for an Airfoil application with up to 64 threads.}\relax }}{}}
-\newlabel{f2b}{{13}{}}
 \bibdata{References}
 \bibcite{r11}{1}
 \bibcite{r12}{2}
@@ -100,6 +106,4 @@
 \bibcite{r23}{19}
 \bibcite{hpx_v0.9.11}{20}
 \bibstyle{IEEEtran}
-\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Comparison results of strong scaling between \texttt  {hpx::lcos::local::dataflow} with \texttt  {hpx::parallel::for\_each} and \texttt  {\#pragma omp parallel for} used for Airfoil application with up to 64 threads. The results illustrate a better performance for \texttt  {hpx::lcos::local::dataflow} for the larger number of threads, which is due to the asynchronous task execution. \texttt  {hpx::lcos::local::dataflow} automatically generated an execution tree, which represents a dependency graph and allows to execute a function asynchronously. }\relax }}{}}
-\newlabel{f2}{{14}{}}
 \@writefile{toc}{\contentsline {section}{References}{}}
