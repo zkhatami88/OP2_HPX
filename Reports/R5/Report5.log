@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  3 MAR 2016 18:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  4 MAR 2016 08:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1048,25 +1048,25 @@ LaTeX Warning: Label `f2' multiply defined.
 )
 \openout1 = `Report5.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 127.
-LaTeX Font Info:    ... okay on input line 127.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 127.
-LaTeX Font Info:    ... okay on input line 127.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 127.
-LaTeX Font Info:    ... okay on input line 127.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 127.
-LaTeX Font Info:    ... okay on input line 127.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 127.
-LaTeX Font Info:    ... okay on input line 127.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 127.
-LaTeX Font Info:    ... okay on input line 127.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 127.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 127.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 129.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 129.
 
  (/usr/local/texlive/2015/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 127.
+LaTeX Font Info:    ... okay on input line 129.
 
 -- Lines per column: 56 (exact).
 (/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
@@ -1087,21 +1087,21 @@ LaTeX Font Info:    ... okay on input line 127.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 \AtBeginShipoutBox=\box84
-LaTeX Font Info:    Calculating math sizes for size <11> on input line 150.
-LaTeX Font Info:    Try loading font information for U+wasy on input line 150.
+LaTeX Font Info:    Calculating math sizes for size <11> on input line 152.
+LaTeX Font Info:    Try loading font information for U+wasy on input line 152.
  (/usr/local/texlive/2015/texmf-dist/tex/latex/wasysym/uwasy.fd
 File: uwasy.fd 2003/10/30 v2.0 Wasy-2 symbol font definitions
 )
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 158.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 160.
 
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <9> not available
-(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 158.
+(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 160.
 
-Underfull \hbox (badness 1354) in paragraph at lines 158--159
+Underfull \hbox (badness 1354) in paragraph at lines 160--161
 \OT1/ptm/b/n/9 com-pared to \OT1/pcr/b/n/9 #pragma omp parallel for\OT1/ptm/b/n
 /9 . To fully ex-
  []
@@ -1110,57 +1110,57 @@ Underfull \hbox (badness 1354) in paragraph at lines 158--159
 
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 190--191
+Underfull \hbox (badness 10000) in paragraph at lines 192--193
 []\OT1/ptm/m/n/10 In this re-search Air-foil ap-pli-ca-tion is stud-ied
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 190--191
+Underfull \hbox (badness 10000) in paragraph at lines 192--193
 \OT1/ptm/m/n/10 that is pre-sented in [16]. We demon-strate OP2
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 190--191
+Underfull \hbox (badness 10000) in paragraph at lines 192--193
 \OT1/ptm/m/n/10 loops through the C$\U/MnSymbolC/m/n/10 ^^T^^T$ \OT1/ptm/m/n/10
  code shown in Fig-ure 1[],
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 190--191
+Underfull \hbox (badness 10000) in paragraph at lines 192--193
 \OT1/ptm/m/n/10 which in-cludes \OT1/pcr/m/n/10 op_par_loop_save_soln \OT1/ptm/
 m/n/10 and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 190--191
+Underfull \hbox (badness 10000) in paragraph at lines 192--193
 \OT1/pcr/m/n/10 op_par_loop_adt_calc \OT1/ptm/m/n/10 loops from an Air-foil
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 190--191
+Underfull \hbox (badness 10000) in paragraph at lines 192--193
 \OT1/ptm/m/n/10 ap-pli-ca-tion. \OT1/pcr/m/n/10 op_par_loop_save_soln \OT1/ptm/
 m/n/10 loop is a
  []
 
 
-Underfull \hbox (badness 3635) in paragraph at lines 190--191
+Underfull \hbox (badness 3635) in paragraph at lines 192--193
 \OT1/ptm/m/n/10 loop. \OT1/pcr/m/n/10 op_par_loop_adt_calc \OT1/ptm/m/n/10 is a
 n $\OML/cmm/m/it/10 indirect$ \OT1/ptm/m/n/10 loop
  []
 
 
-Overfull \hbox (2.5pt too wide) in paragraph at lines 190--191
+Overfull \hbox (2.5pt too wide) in paragraph at lines 192--193
 \OT1/pcr/m/n/10 op_arg_dat(p_x,0,pcell,2,"double",OP_READ)\OT1/ptm/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 207--207
+Underfull \hbox (badness 10000) in paragraph at lines 209--209
 []\OT1/ptm/m/n/10 Figure 1: |\OT1/pcr/m/n/9 op_par_loop_save_soln \OT1/ptm/m/n/
 9 and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 207--207
+Underfull \hbox (badness 10000) in paragraph at lines 209--209
 \OT1/pcr/m/n/9 op_par_loop_save_soln \OT1/ptm/m/n/9 loop is a $\OML/cmm/m/it/9 
 direct$ \OT1/ptm/m/n/9 loop and
  []
@@ -1168,223 +1168,221 @@ direct$ \OT1/ptm/m/n/9 loop and
 [2] <Pictures/f4a.jpg, id=21, 425.59pt x 466.74374pt>
 File: Pictures/f4a.jpg Graphic file (type jpg)
  <use Pictures/f4a.jpg>
-Package pdftex.def Info: Pictures/f4a.jpg used on input line 236.
+Package pdftex.def Info: Pictures/f4a.jpg used on input line 238.
 (pdftex.def)             Requested size: 189.0pt x 207.27655pt.
 
-Underfull \hbox (badness 2556) in paragraph at lines 250--251
+Underfull \hbox (badness 2556) in paragraph at lines 252--253
 []\OT1/ptm/m/n/10 For our eval-u-a-tion we chose the Air-foil ap-pli-ca-tion
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 250--251
+Underfull \hbox (badness 10000) in paragraph at lines 252--253
 \OT1/pcr/m/n/10 op_par_loop_bres_calc\OT1/ptm/m/n/10 , \OT1/pcr/m/n/10 op_par_l
 oop_update\OT1/ptm/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 250--251
+Underfull \hbox (badness 10000) in paragraph at lines 252--253
 \OT1/ptm/m/n/10 which \OT1/pcr/m/n/10 op_par_loop_save_soln\OT1/ptm/m/n/10 , an
 d
  []
 
 
-Underfull \hbox (badness 6691) in paragraph at lines 250--251
+Underfull \hbox (badness 6691) in paragraph at lines 252--253
 \OT1/pcr/m/n/10 op_par_loop_update \OT1/ptm/m/n/10 loops are $\OML/cmm/m/it/10 
 direct$ \OT1/ptm/m/n/10 loops and
  []
 
-LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <8> not available
-(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 284.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [3 <./Pictures/f4a.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 312--313
+Underfull \hbox (badness 10000) in paragraph at lines 314--315
 \OT1/ptm/m/n/10 with \OT1/pcr/m/n/10 hpx::parallel::par \OT1/ptm/m/n/10 is used
  for par-al-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 312--313
+Underfull \hbox (badness 10000) in paragraph at lines 314--315
 \OT1/ptm/m/n/10 leliz-ing the $\OML/cmm/m/it/10 direct$ \OT1/ptm/m/n/10 loops, 
 and for the $\OML/cmm/m/it/10 indirect$
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 312--313
+Underfull \hbox (badness 10000) in paragraph at lines 314--315
 \OT1/ptm/m/n/10 loops, \OT1/pcr/m/n/10 hpx::parallel::for_each \OT1/ptm/m/n/10 
 with
  []
 
 LaTeX Font Info:    Font shape `OT1/pcr/bx/it' in size <10> not available
-(Font)              Font shape `OT1/pcr/b/it' tried instead on input line 319.
+(Font)              Font shape `OT1/pcr/b/it' tried instead on input line 321.
 LaTeX Font Info:    Font shape `OT1/pcr/b/it' in size <10> not available
-(Font)              Font shape `OT1/pcr/b/sl' tried instead on input line 319.
+(Font)              Font shape `OT1/pcr/b/sl' tried instead on input line 321.
 
-Underfull \hbox (badness 10000) in paragraph at lines 321--322
+Underfull \hbox (badness 10000) in paragraph at lines 323--324
 \OT1/ptm/m/n/10 while im-ple-ment-ing \OT1/pcr/m/n/10 hpx::parallel::for_each\O
 T1/ptm/m/n/10 .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 321--322
+Underfull \hbox (badness 10000) in paragraph at lines 323--324
 \OT1/ptm/m/n/10 We were able to mod-ify OP2 source-to-source
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 321--322
+Underfull \hbox (badness 10000) in paragraph at lines 323--324
 \OT1/ptm/m/n/10 trans-la-tor with Python to au-to-mat-i-cally pro-duce
  []
 
 [4]
-Underfull \hbox (badness 2469) in paragraph at lines 375--376
+Underfull \hbox (badness 2469) in paragraph at lines 377--378
 \OT1/ptm/m/n/10 of an ap-pli-ca-tion ex-e-cu-tion time used for de-ter-min-ing
  []
 
 
-Underfull \hbox (badness 6675) in paragraph at lines 375--376
+Underfull \hbox (badness 6675) in paragraph at lines 377--378
 \OT1/ptm/m/n/10 a grain size will af-fect the ap-pli-ca-tion's scal-a-bil-ity,
  []
 
 
-Underfull \hbox (badness 2005) in paragraph at lines 375--376
+Underfull \hbox (badness 2005) in paragraph at lines 377--378
 \OT1/ptm/m/n/10 so HPX pro-vides an-other way to avoid de-grad-ing the
  []
 
 
-Underfull \hbox (badness 4492) in paragraph at lines 375--376
+Underfull \hbox (badness 4492) in paragraph at lines 377--378
 \OT1/ptm/m/n/10 scal-a-bil-ity while us-ing \OT1/pcr/m/n/10 hpx::parallel::for_
 each\OT1/ptm/m/n/10 .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 375--376
+Underfull \hbox (badness 10000) in paragraph at lines 377--378
 \OT1/pcr/m/n/10 hpx::parallel::for_each(par.with(dcs))
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 375--376
+Underfull \hbox (badness 10000) in paragraph at lines 377--378
 \OT1/ptm/m/n/10 be-fore ex-e-cut-ing a loop, which \OT1/pcr/m/n/10 dcs \OT1/ptm
 /m/n/10 is de-fined
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 375--376
+Underfull \hbox (badness 10000) in paragraph at lines 377--378
 \OT1/ptm/m/n/10 with \OT1/pcr/m/n/10 hpx::parallel::dynamic_chunk_size
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 375--376
+Underfull \hbox (badness 10000) in paragraph at lines 377--378
 \OT1/pcr/m/n/10 dcs(SIZE) \OT1/ptm/m/n/10 as a static size. Fig-ure 11[] shows
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 375--376
+Underfull \hbox (badness 10000) in paragraph at lines 377--378
 \OT1/ptm/m/n/10 the loop of \OT1/pcr/m/n/10 op_par_loop_adt_calc \OT1/ptm/m/n/1
 0 func-tion
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 375--376
+Underfull \hbox (badness 10000) in paragraph at lines 377--378
 \OT1/ptm/m/n/10 with static \OT1/pcr/m/n/10 chunk_size \OT1/ptm/m/n/10 im-ple-m
 ented with
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 375--376
+Underfull \hbox (badness 10000) in paragraph at lines 377--378
 \OT1/pcr/m/n/10 hpx::parallel::dynamic_chunk_size
  []
 
 
-Underfull \hbox (badness 6575) in paragraph at lines 375--376
+Underfull \hbox (badness 6575) in paragraph at lines 377--378
 \OT1/pcr/m/n/10 dcs(SIZE)\OT1/ptm/m/n/10 . The ex-per-i-men-tal re-sult for an 
 Air-foil
  []
 
 
-Underfull \hbox (badness 3884) in paragraph at lines 380--381
+Underfull \hbox (badness 3884) in paragraph at lines 382--383
  \OT1/ptm/m/it/10 2) \OT1/pcr/b/sl/10 async \OT1/ptm/b/it/10 and \OT1/pcr/b/sl/
 10 parallel::for_each\OT1/ptm/m/it/10 : [][] \OT1/ptm/m/n/10 Here, we
  []
 
 
-Underfull \hbox (badness 1931) in paragraph at lines 380--381
+Underfull \hbox (badness 1931) in paragraph at lines 382--383
 \OT1/ptm/m/n/10 im-ple-ment two dif-fer-ent par-al-leliza-tion meth-ods for the
 
  []
 
 
-Underfull \hbox (badness 7869) in paragraph at lines 380--381
+Underfull \hbox (badness 7869) in paragraph at lines 382--383
 \OT1/ptm/m/n/10 loops based on their types. For the $\OML/cmm/m/it/10 direct$ \
 OT1/ptm/m/n/10 loops,
  []
 
 
-Underfull \hbox (badness 1571) in paragraph at lines 380--381
+Underfull \hbox (badness 1571) in paragraph at lines 382--383
 \OT1/pcr/m/n/10 hpx::async \OT1/ptm/m/n/10 and \OT1/pcr/m/n/10 hpx::parallel::f
 or_each \OT1/ptm/m/n/10 with
  []
 
 
-Underfull \hbox (badness 1377) in paragraph at lines 380--381
+Underfull \hbox (badness 1377) in paragraph at lines 382--383
 \OT1/ptm/m/n/10 For the $\OML/cmm/m/it/10 indirect$ \OT1/ptm/m/n/10 loops, \OT1
 /pcr/m/n/10 hpx::parallel::for_each
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 382--383
+Underfull \hbox (badness 10000) in paragraph at lines 384--385
 []\OT1/ptm/m/n/10 In Fig-ure 7[], \OT1/pcr/m/n/10 hpx::async \OT1/ptm/m/n/10 an
 d
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 382--383
+Underfull \hbox (badness 10000) in paragraph at lines 384--385
 \OT1/pcr/m/n/10 hpx::parallel::for_each \OT1/ptm/m/n/10 with
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 382--383
+Underfull \hbox (badness 10000) in paragraph at lines 384--385
 \OT1/pcr/m/n/10 hpx::parallel::par \OT1/ptm/m/n/10 is used for
  []
 
 
-Underfull \hbox (badness 4467) in paragraph at lines 382--383
+Underfull \hbox (badness 4467) in paragraph at lines 384--385
 \OT1/pcr/m/n/10 op_par_loop_save_soln\OT1/ptm/m/n/10 , which is a $\OML/cmm/m/i
 t/10 direct$ \OT1/ptm/m/n/10 loop
  []
 
 
-Underfull \hbox (badness 7326) in paragraph at lines 382--383
+Underfull \hbox (badness 7326) in paragraph at lines 384--385
 \OT1/ptm/m/n/10 and re-turns a $\OML/cmm/m/it/10 future$ \OT1/ptm/m/n/10 rep-re
 -sent-ing the re-sult of a
  []
 
 
-Underfull \hbox (badness 5077) in paragraph at lines 382--383
+Underfull \hbox (badness 5077) in paragraph at lines 384--385
 \OT1/ptm/m/n/10 func-tion. In Fig-ure 8[], \OT1/pcr/m/n/10 hpx::parallel::for_e
 ach
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 382--383
+Underfull \hbox (badness 10000) in paragraph at lines 384--385
 \OT1/ptm/m/n/10 with \OT1/pcr/m/n/10 hpx::parallel::par(task) \OT1/ptm/m/n/10 i
 s used for
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 402--402
+Underfull \hbox (badness 10000) in paragraph at lines 404--404
 []\OT1/ptm/m/n/10 Figure 7: |\OT1/ptm/m/n/9 Im-ple-ment-ing \OT1/pcr/m/n/9 hpx:
 :async \OT1/ptm/m/n/9 and
  []
 
 
-Underfull \hbox (badness 2894) in paragraph at lines 402--402
+Underfull \hbox (badness 2894) in paragraph at lines 404--404
 \OT1/pcr/m/n/9 hpx::parallel::for_each \OT1/ptm/m/n/9 with \OT1/pcr/m/n/9 hpx::
 parallel::par
  []
 
 
-Underfull \hbox (badness 1515) in paragraph at lines 428--428
+Underfull \hbox (badness 1515) in paragraph at lines 430--430
 []\OT1/ptm/m/n/10 Figure 8: |\OT1/ptm/m/n/9 Im-ple-ment-ing \OT1/pcr/m/n/9 hpx:
 :parallel::for_each \OT1/ptm/m/n/9 with
  []
@@ -1393,77 +1391,147 @@ Underfull \hbox (badness 1515) in paragraph at lines 428--428
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-Underfull \hbox (badness 1354) in paragraph at lines 464--465
+Underfull \hbox (badness 1354) in paragraph at lines 466--467
 \OT1/ptm/m/n/10 the next steps. The place of us-ing \OT1/pcr/m/n/10 new_data.ge
 t()
  []
 
 
-Underfull \hbox (badness 2020) in paragraph at lines 464--465
+Underfull \hbox (badness 3977) in paragraph at lines 466--467
+\OT1/ptm/m/n/10 de-pends on an ap-pli-ca-tion and a pro-gram-mer should
+ []
+
+
+Underfull \hbox (badness 7777) in paragraph at lines 466--467
+\OT1/ptm/m/n/10 ad-dress this prob-lem. OP2 source-to-source trans-la-tor
+ []
+
+
+Underfull \hbox (badness 2020) in paragraph at lines 466--467
 \OT1/ptm/m/n/10 with Python is mod-i-fied and it au-to-mat-i-cally pro-duces
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 464--465
+Underfull \hbox (badness 10000) in paragraph at lines 466--467
 \OT1/pcr/m/n/10 hpx::async \OT1/ptm/m/n/10 and \OT1/pcr/m/n/10 hpx::parallel::f
 or_each
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 464--465
+Underfull \hbox (badness 10000) in paragraph at lines 466--467
 \OT1/ptm/m/n/10 with \OT1/pcr/m/n/10 hpx::parallel::par \OT1/ptm/m/n/10 for eac
 h di-rect
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 464--465
+Underfull \hbox (badness 10000) in paragraph at lines 466--467
 \OT1/ptm/m/n/10 loops and \OT1/pcr/m/n/10 hpx::parallel::for_each \OT1/ptm/m/n/
 10 with
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 464--465
+Underfull \hbox (badness 10000) in paragraph at lines 466--467
 \OT1/pcr/m/n/10 hpx::parallel::par(task) \OT1/ptm/m/n/10 for each $\OML/cmm/m/i
 t/10 indirect$
  []
 
 [5]
-Underfull \hbox (badness 10000) in paragraph at lines 492--493
+Underfull \hbox (badness 10000) in paragraph at lines 494--495
 []\OT1/pcr/m/n/10 hpx::lcos::local::dataflow \OT1/ptm/m/n/10 with
  []
 
 
-Underfull \hbox (badness 1354) in paragraph at lines 492--493
+Underfull \hbox (badness 1354) in paragraph at lines 494--495
 \OT1/ptm/m/n/10 al-lows the asyn-chro-niza-tion for the ex-e-cuted loops. All
  []
 
 
-Underfull \hbox (badness 2237) in paragraph at lines 527--528
-\OT1/ptm/m/n/10 loops can be done dur-ing a compile-time, how-ever it
+Underfull \hbox (badness 2326) in paragraph at lines 529--530
+\OT1/ptm/m/n/10 Fig-ure 12[] shows only \OT1/pcr/m/n/10 op_par_loop_adt_calc \O
+T1/ptm/m/n/10 and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 552--552
+Underfull \hbox (badness 10000) in paragraph at lines 529--530
+\OT1/pcr/m/n/10 op_par_loop_res_calc \OT1/ptm/m/n/10 from \OT1/pcr/m/n/10 airfo
+il.cpp\OT1/ptm/m/n/10 . It
+ []
+
+
+Underfull \hbox (badness 6300) in paragraph at lines 529--530
+\OT1/ptm/m/n/10 from a pre-vi-ous step pro-duced with \OT1/pcr/m/n/10 op_par_lo
+op
+ []
+
+
+Underfull \hbox (badness 3525) in paragraph at lines 529--530
+\OT1/ptm/m/n/10 in that time step. We can see that the prob-lem of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 529--530
+\OT1/ptm/m/n/10 man-u-ally putting \OT1/pcr/m/n/10 new_data.get() \OT1/ptm/m/n/
+10 ad-dressed in
+ []
+
+
+Underfull \hbox (badness 4832) in paragraph at lines 529--530
+\OT1/ptm/m/n/10 Sec-tion []2[] is solved here. So we can see that
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 529--530
+\OT1/pcr/m/n/10 hpx::lcos::local::dataflow \OT1/ptm/m/n/10 pro-vides a way
+ []
+
+
+Underfull \hbox (badness 1708) in paragraph at lines 529--530
+\OT1/ptm/m/n/10 of in-ter-leav-ing ex-e-cu-tion of $\OML/cmm/m/it/10 indirect$ 
+\OT1/ptm/m/n/10 loops and $\OML/cmm/m/it/10 direct$
+ []
+
+
+Underfull \hbox (badness 4429) in paragraph at lines 529--530
+\OT1/ptm/m/n/10 loops to-gether. In-ter-leav-ing ex-e-cu-tion of $\OML/cmm/m/it
+/10 direct$ \OT1/ptm/m/n/10 loops
+ []
+
+
+Underfull \hbox (badness 1509) in paragraph at lines 529--530
+\OT1/ptm/m/n/10 dif-fi-cult to in-ter-leave $\OML/cmm/m/it/10 indirect$ \OT1/pt
+m/m/n/10 loops dur-ing a compile-
+ []
+
+
+Underfull \hbox (badness 1466) in paragraph at lines 529--530
+\OT1/ptm/m/n/10 time. Us-ing $\OML/cmm/m/it/10 future$ \OT1/ptm/m/n/10 based te
+ch-niques in HPX such as
+ []
+
+
+Underfull \hbox (badness 7576) in paragraph at lines 529--530
+\OT1/pcr/m/n/10 hpx::lcos::local::dataflow \OT1/ptm/m/n/10 en-ables hav-ing an
+ []
+
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 554--554
 []\OT1/ptm/m/n/10 Figure 12: |\OT1/pcr/m/n/9 airfoil.cpp \OT1/ptm/m/n/9 is chan
 ged while us-ing
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 552--552
+Underfull \hbox (badness 10000) in paragraph at lines 554--554
 \OT1/pcr/m/n/9 hpx::lcos::local::dataflow \OT1/ptm/m/n/9 for loop par-al-leliza
 -tion
  []
 
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[6]
-Underfull \hbox (badness 2119) in paragraph at lines 560--561
+Underfull \hbox (badness 2119) in paragraph at lines 562--563
 []\OT1/ptm/m/n/10 OP2 source-to-source trans-la-tor with Python is mod-
  []
 
 
-Underfull \hbox (badness 1496) in paragraph at lines 560--561
+Underfull \hbox (badness 1496) in paragraph at lines 562--563
 \OT1/ptm/m/n/10 i-fied here and \OT1/pcr/m/n/10 hpx::lcos::local::dataflow \OT1
 /ptm/m/n/10 with
  []
@@ -1472,22 +1540,22 @@ Underfull \hbox (badness 1496) in paragraph at lines 560--561
 File: Pictures/parallel_for_each.jpg Graphic file (type jpg)
 
 <use Pictures/parallel_for_each.jpg>
-Package pdftex.def Info: Pictures/parallel_for_each.jpg used on input line 573.
+Package pdftex.def Info: Pictures/parallel_for_each.jpg used on input line 575.
 
 (pdftex.def)             Requested size: 252.0pt x 213.80873pt.
 
-Underfull \hbox (badness 4467) in paragraph at lines 575--575
+Underfull \hbox (badness 4467) in paragraph at lines 577--577
 \OT1/ptm/m/n/9 dy-namic and static \OT1/pcr/m/n/9 chunk_size \OT1/ptm/m/n/9 use
 d for an Air-foil ap-
  []
 
 
-Underfull \hbox (badness 3088) in paragraph at lines 575--575
+Underfull \hbox (badness 3088) in paragraph at lines 577--577
 \OT1/ptm/m/n/9 pli-ca-tion with up to 64 threads. HPX al-lows con-trol-ling a
  []
 
 
-Underfull \hbox (badness 2229) in paragraph at lines 575--575
+Underfull \hbox (badness 2229) in paragraph at lines 577--577
 \OT1/pcr/m/n/9 hpx::parallel::for_each \OT1/ptm/m/n/9 with the static \OT1/pcr/
 m/n/9 chunk_size
  []
@@ -1495,158 +1563,145 @@ m/n/9 chunk_size
 <Pictures/async.jpg, id=37, 581.17125pt x 487.8225pt>
 File: Pictures/async.jpg Graphic file (type jpg)
  <use Pictures/async.jpg>
-Package pdftex.def Info: Pictures/async.jpg used on input line 584.
+Package pdftex.def Info: Pictures/async.jpg used on input line 586.
 (pdftex.def)             Requested size: 252.0pt x 211.52371pt.
 
 <Pictures/dataflow.jpg, id=38, 578.16pt x 488.82625pt>
 File: Pictures/dataflow.jpg Graphic file (type jpg)
 
 <use Pictures/dataflow.jpg>
-Package pdftex.def Info: Pictures/dataflow.jpg used on input line 594.
+Package pdftex.def Info: Pictures/dataflow.jpg used on input line 596.
 (pdftex.def)             Requested size: 252.0pt x 213.06285pt.
 
-Underfull \hbox (badness 5622) in paragraph at lines 596--596
+Underfull \hbox (badness 5622) in paragraph at lines 598--598
 []\OT1/ptm/m/n/10 Figure 15: |\OT1/ptm/m/n/9 Com-par-i-son re-sults of strong s
 cal-ing be-tween
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 596--596
+Underfull \hbox (badness 10000) in paragraph at lines 598--598
 \OT1/pcr/m/n/9 hpx::lcos::local::dataflow \OT1/ptm/m/n/9 and \OT1/pcr/m/n/9 #pr
 agma omp
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 596--596
+Underfull \hbox (badness 10000) in paragraph at lines 598--598
 \OT1/pcr/m/n/9 parallel for \OT1/ptm/m/n/9 used for Air-foil ap-pli-ca-tion wit
 h up to
  []
 
 
-Underfull \hbox (badness 5105) in paragraph at lines 596--596
+Underfull \hbox (badness 5105) in paragraph at lines 598--598
 \OT1/ptm/m/n/9 64 threads. The re-sults il-lus-trate a bet-ter per-for-mance fo
 r
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 596--596
+Underfull \hbox (badness 10000) in paragraph at lines 598--598
 \OT1/pcr/m/n/9 hpx::lcos::local::dataflow \OT1/ptm/m/n/9 for the larger num-ber
 
  []
 
 
-Underfull \hbox (badness 1360) in paragraph at lines 596--596
+Underfull \hbox (badness 1360) in paragraph at lines 598--598
 \OT1/pcr/m/n/9 hpx::lcos::local::dataflow \OT1/ptm/m/n/9 au-to-mat-i-cally gen-
 er-ated an
  []
 
 
-Underfull \hbox (badness 2111) in paragraph at lines 602--603
+Underfull \hbox (badness 2111) in paragraph at lines 604--605
 \OT1/ptm/m/n/10 tion pro-duced with OP2, we per-form the strong scal-
  []
 
 
-Underfull \hbox (badness 1803) in paragraph at lines 602--603
+Underfull \hbox (badness 1803) in paragraph at lines 604--605
 \OT1/ptm/m/n/10 al-lows con-trol-ling a grain size at run-time while us-ing
  []
 
 [7 <./Pictures/parallel_for_each.jpg> <./Pictures/async.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 609--610
+Underfull \hbox (badness 10000) in paragraph at lines 611--612
 []\OT1/ptm/m/n/10 Figure 16[] shows the strong scal-ing com-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 609--610
+Underfull \hbox (badness 10000) in paragraph at lines 611--612
 \OT1/ptm/m/n/10 par-i-son re-sults for \OT1/pcr/m/n/10 #pragma omp parallel
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 609--610
+Underfull \hbox (badness 10000) in paragraph at lines 611--612
 \OT1/pcr/m/n/10 for \OT1/ptm/m/n/10 and \OT1/pcr/m/n/10 hpx::lcos::local::dataf
 low\OT1/ptm/m/n/10 .
  []
 
 
-Underfull \hbox (badness 6284) in paragraph at lines 609--610
+Underfull \hbox (badness 6284) in paragraph at lines 611--612
 \OT1/pcr/m/n/10 hpx::parallel::for_each \OT1/ptm/m/n/10 is used for the loop
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 609--610
+Underfull \hbox (badness 10000) in paragraph at lines 611--612
 \OT1/ptm/m/n/10 par-al-leliza-tion \OT1/pcr/m/n/10 hpx::lcos::local::dataflow \
 OT1/ptm/m/n/10 as
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 609--610
+Underfull \hbox (badness 10000) in paragraph at lines 611--612
 \OT1/ptm/m/n/10 per-for-mance for \OT1/pcr/m/n/10 hpx::lcos::local::dataflow
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 609--610
+Underfull \hbox (badness 10000) in paragraph at lines 611--612
 \OT1/ptm/m/n/10 which is due to the asyn-chronous task ex-e-cu-tion.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 609--610
+Underfull \hbox (badness 10000) in paragraph at lines 611--612
 \OT1/pcr/m/n/10 hpx::lcos::local::dataflow \OT1/ptm/m/n/10 au-to-mat-i-cally
  []
 
 
-Underfull \hbox (badness 3291) in paragraph at lines 609--610
+Underfull \hbox (badness 3291) in paragraph at lines 611--612
 \OT1/ptm/m/n/10 Asyn-chronous task ex-e-cu-tion re-moves a global bar-rier
  []
 
 
-Underfull \hbox (badness 1881) in paragraph at lines 611--612
+Underfull \vbox (badness 1097) has occurred while \output is active []
+
+
+Underfull \hbox (badness 1881) in paragraph at lines 613--614
 \OT1/ptm/m/n/10 sion. For $\OT1/cmr/m/n/10 32$ \OT1/ptm/m/n/10 threads in Fig-u
 re 14[], \OT1/pcr/m/n/10 hpx::async \OT1/ptm/m/n/10 im-
  []
 
 
-Underfull \hbox (badness 3049) in paragraph at lines 611--612
+Underfull \hbox (badness 3049) in paragraph at lines 613--614
 \OT1/ptm/m/n/10 proves a scal-a-bil-ity by about 5% and in Fig-ure 16[],
  []
 
 <Pictures/weak.jpg, id=43, 582.175pt x 491.8375pt>
 File: Pictures/weak.jpg Graphic file (type jpg)
  <use Pictures/weak.jpg>
-Package pdftex.def Info: Pictures/weak.jpg used on input line 619.
+Package pdftex.def Info: Pictures/weak.jpg used on input line 621.
 (pdftex.def)             Requested size: 252.0pt x 212.8969pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 622--622
+Underfull \hbox (badness 10000) in paragraph at lines 624--624
 \OT1/pcr/m/n/9 omp parallel for\OT1/ptm/m/n/9 , \OT1/pcr/m/n/9 hpx::parallel::f
 or_each\OT1/ptm/m/n/9 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 622--622
+Underfull \hbox (badness 10000) in paragraph at lines 624--624
 \OT1/pcr/m/n/9 hpx::async \OT1/ptm/m/n/9 and \OT1/pcr/m/n/9 hpx::lcos::local::d
 ataflow \OT1/ptm/m/n/9 used
  []
 
+[8 <./Pictures/dataflow.jpg> <./Pictures/weak.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 639--640
 
-Underfull \hbox (badness 3460) in paragraph at lines 637--638
-[]\OT1/ptm/m/n/10 With us-ing \OT1/pcr/m/n/10 hpx::parallel::for_each\OT1/ptm/m
-/n/10 , HPX is
  []
 
-
-Underfull \hbox (badness 1831) in paragraph at lines 637--638
-\OT1/ptm/m/n/10 able to con-trol a grain size at run-time and as a re-
- []
-
-
-Underfull \hbox (badness 2556) in paragraph at lines 637--638
-\OT1/ptm/m/n/10 sult the re-source star-va-tion is re-duced as well. How-
- []
-
-
-Underfull \hbox (badness 6927) in paragraph at lines 637--638
-\OT1/ptm/m/n/10 si-ble, which avoids a global bar-rier syn-chro-niza-tion.
- []
-
-[8 <./Pictures/dataflow.jpg> <./Pictures/weak.jpg>] (./Report5.bbl)
+(./Report5.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1671,13 +1726,13 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 18856 strings out of 493089
- 316558 string characters out of 6134842
- 657212 words of memory out of 5000000
- 22037 multiletter control sequences out of 15000+600000
- 58832 words of font info for 141 fonts, out of 8000000 for 9000
+ 18853 strings out of 493089
+ 316524 string characters out of 6134842
+ 626302 words of memory out of 5000000
+ 22034 multiletter control sequences out of 15000+600000
+ 59424 words of font info for 140 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 47i,10n,97p,10463b,1218s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 47i,10n,97p,10463b,1217s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/t
 exlive/2015/texmf-dist/fonts/enc/dvips/mnsymbol/MnSymbolC.enc}{/usr/local/texli
 ve/2015/texmf-dist/fonts/enc/dvips/mnsymbol/MnSymbolE.enc}</usr/local/texlive/2
@@ -1693,7 +1748,7 @@ ts/type1/urw/courier/ucrbo8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type
 mes/utmb8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/times/utmbi8
 a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></us
 r/local/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Report5.pdf (9 pages, 746671 bytes).
+Output written on Report5.pdf (9 pages, 746283 bytes).
 PDF statistics:
  96 PDF objects out of 1000 (max. 8388607)
  66 compressed objects within 1 object stream
