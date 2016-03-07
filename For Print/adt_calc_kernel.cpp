@@ -24,7 +24,8 @@ hpx::shared_future<op_dat> op_par_loop_adt_calc(char const * name, op_set set,
   using hpx::lcos::local::dataflow;
   using hpx::util::unwrapped;
 
-  return dataflow(hpx::launch::async,unwrapped([&name,set](op_arg arg0, op_arg arg1, op_arg arg2, op_arg arg3, op_arg arg4, op_arg arg5){
+  return dataflow(hpx::launch::async,unwrapped([&name,set](op_arg arg0, op_arg arg1, op_arg arg2, 
+                                                          op_arg arg3, op_arg arg4, op_arg arg5){
 
   int nargs = 6;
   op_arg args[6];
