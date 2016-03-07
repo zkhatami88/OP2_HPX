@@ -19,45 +19,45 @@ I'm skipping whatever remains of this entry
 Warning--empty journal in o8
 
 Done.
-You've used 20 entries,
+You've used 21 entries,
             4039 wiz_defined-function locations,
-            919 strings with 11066 characters,
-and the built_in function-call counts, 14242 in all, are:
-= -- 1095
-> -- 399
-< -- 85
-+ -- 203
-- -- 80
-* -- 690
-:= -- 2141
-add.period$ -- 47
-call.type$ -- 20
-change.case$ -- 21
-chr.to.int$ -- 183
-cite$ -- 21
-duplicate$ -- 1074
-empty$ -- 1235
-format.name$ -- 98
-if$ -- 3285
+            924 strings with 11335 characters,
+and the built_in function-call counts, 15105 in all, are:
+= -- 1159
+> -- 422
+< -- 92
++ -- 215
+- -- 84
+* -- 731
+:= -- 2260
+add.period$ -- 50
+call.type$ -- 21
+change.case$ -- 22
+chr.to.int$ -- 201
+cite$ -- 22
+duplicate$ -- 1135
+empty$ -- 1315
+format.name$ -- 103
+if$ -- 3490
 int.to.chr$ -- 0
-int.to.str$ -- 20
-missing$ -- 207
-newline$ -- 85
-num.names$ -- 20
-pop$ -- 526
+int.to.str$ -- 21
+missing$ -- 218
+newline$ -- 88
+num.names$ -- 21
+pop$ -- 555
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1089
+skip$ -- 1154
 stack$ -- 0
-substring$ -- 472
-swap$ -- 801
-text.length$ -- 24
+substring$ -- 515
+swap$ -- 849
+text.length$ -- 25
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 20
+type$ -- 21
 warning$ -- 1
-while$ -- 62
-width$ -- 22
-write$ -- 208
+while$ -- 67
+width$ -- 23
+write$ -- 217
 (There was 1 error message)

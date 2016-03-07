@@ -127,6 +127,13 @@ J.~M. Bull, ``{Measuring synchronization and scheduling overheads in OpenMP},''
   in \emph{Proceedings of First European Workshop on OpenMP}, vol.~8, 1999,
   p.~49.
 
+\bibitem{p1}
+H.~Kaiser, T.~Heller, D.~Bourgeois, and D.~Fey, ``Higher-level parallelization
+  for local and distributed asynchronous task-based programming,'' in
+  \emph{Proceedings of the First International Workshop on Extreme Scale
+  Programming Models and Middleware}.\hskip 1em plus 0.5em minus 0.4em\relax
+  ACM, 2015, pp. 29--37.
+
 \bibitem{hpx_v0.9.11}
 \BIBentryALTinterwordspacing
 H.~Kaiser, T.~Heller, A.~Berge, and B.~Adelstein-Lelbach, ``{HPX V0.9.11: A

@@ -40,10 +40,11 @@
 \citation{r23}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The principle of operation of a \textit  {$future$} in HPX\relax }}{}}
 \newlabel{f4}{{2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {IV}Airfoil code with HPX}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Airfoil application with HPX}{}}
 \newlabel{sec:air}{{IV}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Five loops are used in \texttt  {airfoil.cpp} for saving old data values, applying the computation on each data value and updating them. \texttt  {save\_soln} and \texttt  {update} loops are $direct$ loops and the others are $indirect$ one.}\relax }}{}}
 \newlabel{l1}{{3}{}}
+\citation{p1}
 \citation{hpx_v0.9.11}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {\texttt  {\#pragma omp parallel for} is used for loop parallelization in OP2 for Airfoil application to obtain the loop parallelization on one node and also on the distributed nodes using MPI.}\relax }}{}}
 \newlabel{l2}{{4}{}}
@@ -68,13 +69,13 @@
 \citation{r7}
 \@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {\texttt  {airfoil.cpp} is changed while using \texttt  {hpx::async} and \texttt  {hpx::parallel::par(task)} for loop parallelization in OP2. \texttt  {new\_data} is returned from each kernel function after calling \texttt  {op\_par\_loop} and \texttt  {new\_data.get()} is used to get $futures$ ready before the next steps.}\relax }}{}}
 \newlabel{l4}{{9}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces A \texttt  {data flow} object encapsulates a function $F(in_1,in_2,...,in_n)$ with $n$ inputs from different data resources. As soon as the last input argument has been received, the function $F$ is scheduled for an execution \cite  {r7}.\relax }}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces A Dataflow object encapsulates a function $F(in_1,in_2,...,in_n)$ with $n$ inputs from different data resources. As soon as the last input argument has been received, the function $F$ is scheduled for an execution \cite  {r7}.\relax }}{}}
 \newlabel{o3}{{10}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {\texttt  {op\_arg\_dat} is modified to create an argument as a $future$, which is passed to a function through \texttt  {op\_par\_loop}.}\relax }}{}}
 \newlabel{o2}{{11}{}}
-\citation{hpx_v0.9.11}
 \@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Implementing \texttt  {hpx::parallel::for\_each} within \texttt  {hpx::lcos::local::dataflow} for loop parallelization in OP2 for Airfoil application. It makes the invocation of the loop asynchronous and return $future$, which is is stored in \texttt  {new\_data}. \texttt  {hpx::lcos::local::dataflow} allows automatically creating the execution graph which represents a dependency tree.}\relax }}{}}
 \newlabel{l3b}{{12}{}}
+\citation{hpx_v0.9.11}
 \@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {\texttt  {airfoil.cpp} is changed while using \texttt  {hpx::lcos::local::dataflow} for loop parallelization in OP2. \texttt  {data[t]} is returned from each kernel function after calling \texttt  {op\_par\_loop} using \texttt  {data[t-1]}.}\relax }}{}}
 \newlabel{l3c}{{13}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {V}Experimental Results}{}}
@@ -85,8 +86,8 @@
 \newlabel{f3}{{15}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Comparison results of strong scaling between \texttt  {hpx::lcos::local::dataflow} and \texttt  {\#pragma omp parallel for} used for Airfoil application with up to 64 threads. The results illustrate a better performance for \texttt  {hpx::lcos::local::dataflow} for the larger number of threads, which is due to the asynchronous task execution. \texttt  {hpx::lcos::local::dataflow} automatically generated an execution tree, which represents a dependency graph and allows to execute a function asynchronously. }\relax }}{}}
 \newlabel{f2}{{16}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Comparison results of a weak scaling between \texttt  {\#pragma omp parallel for}, \texttt  {hpx::parallel::for\_each}, \texttt  {hpx::async} and \texttt  {hpx::lcos::local::dataflow} used for Airfoil application with up to 64 threads. The results illustrate a better performance for \texttt  {hpx::lcos::local::dataflow}, which shows the perfect overlap of computation with communication enabled by HPX.}\relax }}{}}
-\newlabel{f2}{{17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces \relax \fontsize  {9}{10pt}\selectfont  {Comparison results of a weak scaling between \texttt  {\#pragma omp parallel for}, \texttt  {hpx::parallel::for\_each}, \texttt  {hpx::async} and \texttt  {hpx::lcos::local::dataflow} used for Airfoil application. The results illustrate a better performance for \texttt  {hpx::lcos::local::dataflow}, which shows the perfect overlap of computation with communication enabled by HPX.}\relax }}{}}
+\newlabel{f5}{{17}{}}
 \bibdata{References}
 \bibcite{r11}{1}
 \bibcite{r12}{2}
@@ -105,10 +106,11 @@
 \bibcite{o7}{15}
 \bibcite{o8}{16}
 \bibcite{r15}{17}
+\bibcite{r20}{18}
+\bibcite{r23}{19}
+\bibcite{p1}{20}
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Conclusion}{}}
 \newlabel{sec:future}{{VI}{}}
 \@writefile{toc}{\contentsline {section}{References}{}}
-\bibcite{r20}{18}
-\bibcite{r23}{19}
-\bibcite{hpx_v0.9.11}{20}
+\bibcite{hpx_v0.9.11}{21}
 \bibstyle{IEEEtran}
