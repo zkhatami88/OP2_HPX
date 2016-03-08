@@ -385,7 +385,7 @@ boost::uint64_t t = hpx::util::high_resolution_clock::now();
       op_arg_dat1(v0[iter-1], -1,OP_ID, 4,"double",OP_READ ),
       op_arg_dat1(v1[iter-1], -1,OP_ID, 4,"double",OP_WRITE));
 
-//    for(int k=0; k<2; k++) {
+    for(int k=0; k<2; k++) {
 
       // calculate area/timstep
 
@@ -435,20 +435,16 @@ boost::uint64_t t = hpx::util::high_resolution_clock::now();
           op_arg_dat1(v2[iter], -1,OP_ID, 1,"double",OP_READ ), 
           op_arg_gbl(&rms,1,"double",OP_INC));
 
-	//}
+	}
   }
 
-for(int i=0; i<niter; ++i){
-	v0[i].get();
-	v1[i].get();
-	v2[i].get();
-	v3[i].get();
-	v4[i].get();
-	v5[i].get();
-}
 
-
-when_all(v0).get();
+v0[niter-1].get();
+v1[niter-1].get();
+v2[niter-1].get();
+v3[niter-1].get();
+v4[niter-1].get();
+v5[niter-1].get();
 
 boost::uint64_t elapsed = hpx::util::high_resolution_clock::now() - t;
 std::cout<<(boost::format("%.14g")%(elapsed/ 1e9)) <<std::flush<<std::endl;
